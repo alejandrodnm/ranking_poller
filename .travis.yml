@@ -1,0 +1,17 @@
+language: elixir
+elixir:
+  - 1.6
+otp_release:
+  - 21.0
+sudo: false
+env:
+  global:
+    - ELIXIR_ASSERT_TIMEOUT=2000
+before_script:
+  - mix deps.get
+script:
+  - make coverage
+  - make style
+# after_script:
+#   - cd $TRAVIS_BUILD_DIR
+#   - MIX_ENV=docs mix inch.report
