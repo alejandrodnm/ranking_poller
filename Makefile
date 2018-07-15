@@ -2,11 +2,11 @@ style:
 	mix credo --strict
 
 docs-report:
-	MIX_ENV=docs mix inch --pedantic
+	mix inch --pedantic
 
 coverage:
-	MIX_ENV=test mix coveralls -u
+	mix coveralls -u
 
-test: coverage docs-report style
+test: coverage style docs-report
 
 .PHONY: test style docs-report coverage
