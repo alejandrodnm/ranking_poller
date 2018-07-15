@@ -12,12 +12,7 @@ defmodule Standings.MixProject do
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      preferred_cli_env: [
-        vcr: :test,
-        "vcr.delete": :test,
-        "vcr.check": :test,
-        "vcr.show": :test
-      ]
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
