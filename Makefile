@@ -1,3 +1,6 @@
+migrate:
+	mix ecto.migrate -r Persistence.Repo --all
+
 style:
 	mix credo --strict
 
