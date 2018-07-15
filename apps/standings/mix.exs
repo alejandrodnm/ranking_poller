@@ -27,7 +27,8 @@ defmodule Standings.MixProject do
   defp deps do
     [
       {:httpoison, "~> 1.0"},
-      {:exvcr, "~> 0.10", only: :test}
+      {:exvcr, "~> 0.10", only: :test},
+      {:persistence, in_umbrella: true}
     ]
   end
 end
