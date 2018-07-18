@@ -11,4 +11,9 @@ defmodule Standings.Coin do
     field(:slug, :string)
     field(:symbol, :string)
   end
+
+  # def changeset(model, attrs \\ %{}) do
+  #   model
+  #   |> cast(attr
+  # end
 end

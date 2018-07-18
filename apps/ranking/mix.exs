@@ -1,9 +1,9 @@
-defmodule Standings.MixProject do
+defmodule Ranking.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :standings,
+      app: :ranking,
       version: "0.1.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
@@ -28,6 +28,7 @@ defmodule Standings.MixProject do
     [
       {:httpoison, "~> 1.0"},
       {:exvcr, "~> 0.10", only: :test},
+      {:jason, "~> 1.1"},
       {:persistence, in_umbrella: true}
     ]
   end

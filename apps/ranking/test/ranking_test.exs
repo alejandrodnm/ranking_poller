@@ -1,12 +1,12 @@
-defmodule StandingsTest do
+defmodule RankingTest do
   use ExUnit.Case
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 
-  doctest Standings
+  doctest Ranking
 
   test "fetch current standings" do
     use_cassette "coin_base_v2_standings" do
-      assert Standings.fetch_current()
+      assert Ranking.fetch_current()
     end
   end
 end
