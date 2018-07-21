@@ -1,11 +1,11 @@
-defmodule RankingTest do
+defmodule ProviderTest do
   use ExUnit.Case
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 
-  doctest Ranking
+  doctest Provider
 
-  test "fetch current standings" do
-    use_cassette "coin_base_v2_standings" do
+  test "get ranking" do
+    use_cassette "provider_get_ranking" do
       assert Ranking.fetch_current()
     end
   end
