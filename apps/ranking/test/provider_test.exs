@@ -6,7 +6,7 @@ defmodule ProviderTest do
 
   test "get ranking" do
     use_cassette "provider_get_ranking" do
-      assert Ranking.fetch_current()
+      {:ok, ranking} = Provider.get_ranking()
     end
   end
 end

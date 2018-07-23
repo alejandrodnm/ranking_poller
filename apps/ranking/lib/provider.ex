@@ -20,7 +20,7 @@ defmodule Provider do
   defp make_request do
     case HTTPoison.get(@endpoint) do
       {:ok, response} ->
-        response.body
+        {:ok, response.body}
 
       error ->
         error
