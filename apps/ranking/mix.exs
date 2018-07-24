@@ -34,7 +34,8 @@ defmodule Ranking.MixProject do
       {:httpoison, "~> 1.0"},
       {:exvcr, "~> 0.10", only: :test},
       {:jason, "~> 1.1"},
-      {:persistence, in_umbrella: true}
+      {:persistence, in_umbrella: true},
+      {:decimal, "~> 1.0"}
     ]
   end
 end

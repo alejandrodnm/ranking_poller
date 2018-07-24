@@ -12,6 +12,7 @@ defmodule Coin do
     field(:name, :string)
     field(:website_slug, :string)
     field(:symbol, :string)
+    has_many(:quotes, Quote, references: :id)
   end
 
   def changeset(coin, attrs \\ %{}) do

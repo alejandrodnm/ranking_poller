@@ -28,6 +28,22 @@ defmodule Ranking.Test.Factory do
     }
   end
 
+  def payload(:quote) do
+    coin = insert!(:coin)
+
+    %{
+      "timestamp" => 1_532_465_408,
+      "price" => 0.00341024,
+      "volume_24h" => 11_699_500,
+      "market_cap" => 393_467_597,
+      "percent_change_1h" => -0.54,
+      "percent_change_24h" => 0.41,
+      "percent_change_7d" => 43.98,
+      "last_updated" => 1_532_248_213,
+      "coin_id" => coin.id
+    }
+  end
+
   @spec build(:coin) :: %Coin{}
   def build(:coin) do
     payload = payload(:coin)

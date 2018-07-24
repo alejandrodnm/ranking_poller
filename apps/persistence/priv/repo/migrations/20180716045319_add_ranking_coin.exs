@@ -4,9 +4,9 @@ defmodule Persistence.Repo.Migrations.AddRankingCoin do
   def change do
     create table("ranking_coin", primary_key: false) do
       add(:id, :integer, primary_key: true)
-      add(:name, :string)
-      add(:website_slug, :string)
-      add(:symbol, :string)
+      add(:name, :string, null: false)
+      add(:website_slug, :string, null: false)
+      add(:symbol, :string, null: false)
     end
 
     create(index("ranking_coin", [:name], unique: true))
