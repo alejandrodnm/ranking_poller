@@ -17,8 +17,8 @@ defmodule Ranking.Test.Factory do
       "quotes" => %{
         "USD" => %{
           "price" => 0.00341024,
-          "volume_24h" => 11_699_500,
-          "market_cap" => 393_467_597,
+          "volume_24h" => 5_905_270_000,
+          "market_cap" => 140_764_123_319,
           "percent_change_1h" => -0.54,
           "percent_change_24h" => 0.41,
           "percent_change_7d" => 43.98
@@ -34,8 +34,8 @@ defmodule Ranking.Test.Factory do
     %{
       "timestamp" => 1_532_465_408,
       "price" => 0.00341024,
-      "volume_24h" => 11_699_500,
-      "market_cap" => 393_467_597,
+      "volume_24h" => 5_905_270_000,
+      "market_cap" => 140_764_123_319,
       "percent_change_1h" => -0.54,
       "percent_change_24h" => 0.41,
       "percent_change_7d" => 43.98,

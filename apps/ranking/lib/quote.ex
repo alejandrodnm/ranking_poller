@@ -1,6 +1,6 @@
 defmodule Quote do
   @moduledoc """
-  Represents the quotes of a `Coin` in a given point in time
+  Represents the quotes of a `Coin` in a given point in time.
   """
   use Ecto.Schema
   alias Persistence.Repo
@@ -10,8 +10,8 @@ defmodule Quote do
     timestamps(type: :utc_datetime)
     field(:timestamp, :integer)
     field(:price, :decimal)
-    field(:volume_24h, :integer)
-    field(:market_cap, :integer)
+    field(:volume_24h, :decimal)
+    field(:market_cap, :decimal)
     field(:percent_change_1h, :decimal)
     field(:percent_change_24h, :decimal)
     field(:percent_change_7d, :decimal)
@@ -19,6 +19,11 @@ defmodule Quote do
     belongs_to(:coin, Coin, references: :id)
   end
 
+  @doc """
+  Validates the attributes of a `Map` against the `Quote` schema, it
+  also checks that the coin that the quote belongs to exists in the
+  database.
+  """
   def changeset(quote_, attrs \\ %{}) do
     quote_
     |> cast(attrs, [
@@ -35,6 +40,9 @@ defmodule Quote do
     |> foreign_key_constraint(:coin_id)
   end
 
+  @doc """
+  Persists a `%Quote{}` in the database from the given payload.
+  """
   def insert(payload) do
     %Quote{}
     |> changeset(payload)

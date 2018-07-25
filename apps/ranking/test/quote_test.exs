@@ -1,20 +1,14 @@
 defmodule QuoteTest do
-  use ExUnit.Case
+  use Persistence.DataCase
   alias Ecto.Adapters.SQL.Sandbox
   alias Persistence.Repo
   alias Ranking.Test.Factory
 
-  setup do
-    # Explicitly get a connection before each test
-    # By default the test is wrapped in a transaction
-    :ok = Sandbox.checkout(Repo)
-  end
-
   defp assert_quote(quote_, payload) do
     assert quote_.timestamp == payload["timestamp"]
     assert quote_.price == Decimal.new(payload["price"])
-    assert quote_.volume_24h == payload["volume_24h"]
-    assert quote_.market_cap == payload["market_cap"]
+    assert quote_.volume_24h == Decimal.new(payload["volume_24h"])
+    assert quote_.market_cap == Decimal.new(payload["market_cap"])
     assert quote_.percent_change_1h == Decimal.new(payload["percent_change_1h"])
     assert quote_.percent_change_24h == Decimal.new(payload["percent_change_24h"])
     assert quote_.percent_change_7d == Decimal.new(payload["percent_change_7d"])

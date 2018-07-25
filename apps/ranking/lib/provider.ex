@@ -32,7 +32,7 @@ defmodule Provider do
     {:ok, body}
   end
 
-  defp check_response_body(%{"metadata" => %{"error" => reason}} = body) do
+  defp check_response_body(%{"metadata" => %{"error" => reason}}) do
     {:error, reason}
   end
 end
