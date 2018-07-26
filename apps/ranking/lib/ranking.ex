@@ -23,6 +23,7 @@ defmodule Ranking do
     Repo.transaction(multi)
   end
 
+  @spec process_coin(list(map()), pos_integer(), Multi.t()) :: Multi.t()
   defp process_coin([], _, multi) do
     multi
   end
@@ -42,6 +43,7 @@ defmodule Ranking do
     process_coin(tail, timestamp, new_multi)
   end
 
+  @spec get_quote_payload(map(), pos_integer()) :: map()
   defp get_quote_payload(coin_payload, timestamp) do
     {:ok, quotes} = Map.fetch(coin_payload, "quotes")
     {:ok, usd} = Map.fetch(quotes, "USD")

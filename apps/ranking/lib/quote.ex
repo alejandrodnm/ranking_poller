@@ -2,9 +2,9 @@ defmodule Quote do
   @moduledoc """
   Represents the quotes of a `Coin` in a given point in time.
   """
-  use Ecto.Schema
   alias Persistence.Repo
   import Ecto.Changeset
+  use Ecto.Schema
 
   schema "ranking_quote" do
     timestamps(type: :utc_datetime)
@@ -24,6 +24,7 @@ defmodule Quote do
   also checks that the coin that the quote belongs to exists in the
   database.
   """
+  @spec changeset(%Quote{}, map()) :: Ecto.Changeset.t()
   def changeset(quote_, attrs \\ %{}) do
     quote_
     |> cast(attrs, [
@@ -43,6 +44,7 @@ defmodule Quote do
   @doc """
   Persists a `%Quote{}` in the database from the given payload.
   """
+  @spec insert(map()) :: {:ok, %Quote{}} | {:error, String.t()}
   def insert(payload) do
     %Quote{}
     |> changeset(payload)

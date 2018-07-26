@@ -7,6 +7,9 @@ defmodule StandingsPoller.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
+      dialyzer: [
+        flags: ["-Wunmatched_returns", :error_handling, :underspecs]
+      ],
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.travis": :test,

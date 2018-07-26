@@ -8,7 +8,7 @@ defmodule Provider do
   Makes a request to the provider endpoint to retrieve the current
   ranking of the top 100 coins
   """
-  @spec get_ranking :: {:ok, map()} | {:error, any()}
+  @spec get_ranking :: {:ok, map()} | {:error, binary()}
   def get_ranking do
     with {:ok, body} <- make_request(),
          {:ok, decoded_response} <- Jason.decode(body) do
