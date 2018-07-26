@@ -8,3 +8,5 @@ config :persistence, Persistence.Repo,
   database: "ranking_poller_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+if System.get_env("CI") == "true", do: import_config "ci.exs"
