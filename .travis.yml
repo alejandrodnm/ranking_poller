@@ -1,14 +1,21 @@
 language: elixir
 elixir:
-  - 1.6
+  - 1.7
 otp_release:
   - 21.0
+services:
+  - postgresql
+addons:
+  postgresql: "9.6"
 sudo: false
 env:
   global:
     - ELIXIR_ASSERT_TIMEOUT=2000
+    - CI=true
 before_script:
   - mix deps.get
+  - MIX_ENV=test mix ecto.create
+  - MIX_ENV=test mix ecto.migrate
 script:
   - MIX_ENV=test mix coveralls.travis -u
   - make style
