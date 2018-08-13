@@ -13,8 +13,8 @@ defmodule StandingsPoller.MixProject do
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.travis": :test,
-        inch: :docs,
-        "inch.report": :docs,
+        inch: :test,
+        "inch.report": :test,
         vcr: :test,
         "vcr.delete": :test,
         "vcr.check": :test,
@@ -31,8 +31,8 @@ defmodule StandingsPoller.MixProject do
   defp deps do
     [
       # Docs dependencies
-      {:ex_doc, "~> 0.18.0", only: :docs, runtime: false},
-      {:inch_ex, "~> 0.5", only: [:docs]},
+      {:ex_doc, "~> 0.19.0", only: :dev, runtime: false},
+      {:inch_ex, "~> 2.0.0-dev", only: [:test], github: "rrrene/inch_ex"},
       {:credo, "~> 0.9", only: [:dev, :test]},
       {:dialyxir, "~> 1.0.0-rc.3", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.8", only: :test}
