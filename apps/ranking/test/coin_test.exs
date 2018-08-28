@@ -1,4 +1,4 @@
-defmodule CoinTest do
+defmodule Ranking.CoinTest do
   alias Ecto.Adapters.SQL.Sandbox
   alias Persistence.Repo
   alias Ranking.Coin

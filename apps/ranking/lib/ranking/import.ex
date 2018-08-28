@@ -5,6 +5,7 @@ defmodule Ranking.Import do
   alias Ecto.Multi
   alias Persistence.Repo
   alias Ranking.Coin
+  alias Ranking.Provider
   alias Ranking.Quote
   import Ecto.Changeset
   use Ecto.Schema
@@ -15,6 +16,22 @@ defmodule Ranking.Import do
     field(:num_cryptocurrencies, :integer)
     field(:error, :string)
     has_many(:quotes, Quote)
+  end
+
+  @doc """
+  Validates the attributes of a `Map` against the `Ranking.Import` schema.
+  """
+  @spec changeset(%Ranking.Import{}, map()) :: Ecto.Changeset.t()
+  def changeset(ranking_import, attrs \\ %{}) do
+    ranking_import
+    |> cast(attrs, [:timestamp, :num_cryptocurrencies, :error])
+  end
+
+  @spec insert(map()) :: {:ok, %Ranking.Import{}} | {:error, String.t()}
+  def insert(payload) do
+    %Ranking.Import{}
+    |> changeset(payload)
+    |> Repo.insert()
   end
 
   @doc """

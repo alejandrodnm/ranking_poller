@@ -25,9 +25,9 @@ defmodule Ranking.Quote do
   end
 
   @doc """
-  Validates the attributes of a `Map` against the `Quote` schema, it
-  also checks that the coin that the quote belongs to exists in the
-  database.
+  Validates the attributes of a `Map` against the `Ranking.Quote`
+  schema, it also checks that the coin that the quote belongs to
+  exists in the database.
   """
   @spec changeset(%Ranking.Quote{}, map()) :: Ecto.Changeset.t()
   def changeset(quote_, attrs \\ %{}) do
