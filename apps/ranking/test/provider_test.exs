@@ -1,4 +1,5 @@
 defmodule ProviderTest do
+  alias Ranking.Provider
   use ExUnit.Case
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 

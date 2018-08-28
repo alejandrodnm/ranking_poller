@@ -1,8 +1,9 @@
 defmodule QuoteTest do
-  use Persistence.DataCase
   alias Ecto.Adapters.SQL.Sandbox
   alias Persistence.Repo
+  alias Ranking.Quote
   alias Ranking.Test.Factory
+  use Persistence.DataCase
 
   defp assert_quote(quote_, payload) do
     assert quote_.timestamp == payload["timestamp"]
@@ -12,7 +13,6 @@ defmodule QuoteTest do
     assert quote_.percent_change_1h == Decimal.new(payload["percent_change_1h"])
     assert quote_.percent_change_24h == Decimal.new(payload["percent_change_24h"])
     assert quote_.percent_change_7d == Decimal.new(payload["percent_change_7d"])
-    assert quote_.last_updated == payload["last_updated"]
     assert quote_.coin_id == payload["coin_id"]
   end
 

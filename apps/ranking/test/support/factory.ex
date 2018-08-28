@@ -3,6 +3,8 @@ defmodule Ranking.Test.Factory do
   Factory for Coin test data
   """
   alias Persistence.Repo
+  alias Ranking.Coin
+  alias Ranking.Import
 
   def payload(:coin) do
     %{
@@ -30,6 +32,7 @@ defmodule Ranking.Test.Factory do
 
   def payload(:quote) do
     coin = insert!(:coin)
+    ranking_import = insert!(:ranking_import)
 
     %{
       "timestamp" => 1_532_465_408,
@@ -40,7 +43,30 @@ defmodule Ranking.Test.Factory do
       "percent_change_24h" => 0.41,
       "percent_change_7d" => 43.98,
       "last_updated" => 1_532_248_213,
-      "coin_id" => coin.id
+      "coin_id" => coin.id,
+      "circulating_supply" => 115_378_271_672,
+      "total_supply" => 115_378_271_672,
+      "max_supply" => nil,
+      "ranking_import_id" => ranking_import.id
+    }
+  end
+
+  def payload(:ranking_import) do
+    %{
+      "timestamp" => 1_532_465_408,
+      "num_cryptocurrencies" => 5_905,
+      "error" => ""
+    }
+  end
+
+  @spec build(:ranking_coin) :: %Import{}
+  def build(:ranking_import) do
+    payload = payload(:ranking_import)
+
+    %Import{
+      timestamp: payload["timestamp"],
+      num_cryptocurrencies: payload["num_cryptocurrencies"],
+      error: payload["error"]
     }
   end
 

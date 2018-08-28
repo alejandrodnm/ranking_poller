@@ -13,7 +13,7 @@ defmodule Persistence.Repo.Migrations.AddRankingQuote do
       add(:last_updated, :integer, null: false)
       add(:circulating_supply, :decimal, null: false)
       add(:total_supply, :decimal, null: false)
-      add(:max_supply, :decimal, null: false)
+      add(:max_supply, :decimal)
       add(:coin_id, references("ranking_coin"), null: false)
     end
   end

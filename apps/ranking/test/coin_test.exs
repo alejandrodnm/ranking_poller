@@ -1,8 +1,9 @@
 defmodule CoinTest do
-  use Persistence.DataCase
   alias Ecto.Adapters.SQL.Sandbox
   alias Persistence.Repo
+  alias Ranking.Coin
   alias Ranking.Test.Factory
+  use Persistence.DataCase
 
   doctest Coin
 

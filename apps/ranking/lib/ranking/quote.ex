@@ -9,6 +9,7 @@ defmodule Ranking.Quote do
   use Ecto.Schema
 
   schema "ranking_quote" do
+    field(:timestamp, :integer)
     field(:price, :decimal)
     field(:volume_24h, :decimal)
     field(:market_cap, :decimal)
@@ -20,7 +21,7 @@ defmodule Ranking.Quote do
     field(:total_supply, :decimal)
     field(:max_supply, :decimal)
     belongs_to(:coin, Coin, references: :id)
-    belongs_to(:coin, Import)
+    belongs_to(:ranking_import, Import)
   end
 
   @doc """
@@ -43,7 +44,8 @@ defmodule Ranking.Quote do
       :coin_id,
       :circulating_supply,
       :total_supply,
-      :max_supply
+      :max_supply,
+      :ranking_import_id
     ])
     |> foreign_key_constraint(:coin_id)
   end

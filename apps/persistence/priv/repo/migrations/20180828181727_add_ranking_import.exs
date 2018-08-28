@@ -10,10 +10,10 @@ defmodule Persistence.Repo.Migrations.AddRankingImport do
     end
 
     alter table("ranking_quote") do
-      add(:import_id, references("ranking_import"), null: false)
+      add(:ranking_import_id, references("ranking_import"), null: false)
     end
 
-    create(index("ranking_quote", [:import_id, :coin_id], unique: true))
+    create(index("ranking_quote", [:ranking_import_id, :coin_id], unique: true))
 
     create(
       index("ranking_import", ["(date(inserted_at))"],
