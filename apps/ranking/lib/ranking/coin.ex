@@ -1,8 +1,9 @@
-defmodule Coin do
+defmodule Ranking.Coin do
   @moduledoc """
   Represents a virtual coin.
   """
   alias Persistence.Repo
+  alias Ranking.Quote
   import Ecto.Changeset
   use Ecto.Schema
 
@@ -19,7 +20,7 @@ defmodule Coin do
   @doc """
   Validates the attributes of a `Map` against the `Coin` schema.
   """
-  @spec changeset(%Coin{}, map()) :: Ecto.Changeset.t()
+  @spec changeset(%Ranking.Coin{}, map()) :: Ecto.Changeset.t()
   def changeset(coin, attrs \\ %{}) do
     coin
     |> cast(attrs, [:id, :name, :symbol, :website_slug])
@@ -39,9 +40,9 @@ defmodule Coin do
     iex> coin.id
     1
   """
-  @spec get_or_insert(map()) :: {:ok, %Coin{}} | {:error, String.t()}
+  @spec get_or_insert(map()) :: {:ok, %Ranking.Coin{}} | {:error, String.t()}
   def get_or_insert(payload) do
-    %Coin{}
+    %Ranking.Coin{}
     |> changeset(payload)
     |> Repo.insert(on_conflict: :nothing)
   end

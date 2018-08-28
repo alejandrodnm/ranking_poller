@@ -4,6 +4,8 @@ defmodule Ranking do
   """
   alias Ecto.Multi
   alias Persistence.Repo
+  alias Ranking.Coin
+  alias Ranking.Quote
 
   @doc """
   Fetches the current ranking from the provider, processes the output

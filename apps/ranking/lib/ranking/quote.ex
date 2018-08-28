@@ -1,14 +1,14 @@
-defmodule Quote do
+defmodule Ranking.Quote do
   @moduledoc """
   Represents the quotes of a `Coin` in a given point in time.
   """
   alias Persistence.Repo
+  alias Ranking.Coin
+  alias Ranking.Import
   import Ecto.Changeset
   use Ecto.Schema
 
   schema "ranking_quote" do
-    timestamps(type: :utc_datetime)
-    field(:timestamp, :integer)
     field(:price, :decimal)
     field(:volume_24h, :decimal)
     field(:market_cap, :decimal)
@@ -16,7 +16,11 @@ defmodule Quote do
     field(:percent_change_24h, :decimal)
     field(:percent_change_7d, :decimal)
     field(:last_updated, :integer)
+    field(:circulating_supply, :decimal)
+    field(:total_supply, :decimal)
+    field(:max_supply, :decimal)
     belongs_to(:coin, Coin, references: :id)
+    belongs_to(:coin, Import)
   end
 
   @doc """
@@ -24,7 +28,7 @@ defmodule Quote do
   also checks that the coin that the quote belongs to exists in the
   database.
   """
-  @spec changeset(%Quote{}, map()) :: Ecto.Changeset.t()
+  @spec changeset(%Ranking.Quote{}, map()) :: Ecto.Changeset.t()
   def changeset(quote_, attrs \\ %{}) do
     quote_
     |> cast(attrs, [
@@ -36,7 +40,10 @@ defmodule Quote do
       :percent_change_24h,
       :percent_change_7d,
       :last_updated,
-      :coin_id
+      :coin_id,
+      :circulating_supply,
+      :total_supply,
+      :max_supply
     ])
     |> foreign_key_constraint(:coin_id)
   end
@@ -44,9 +51,9 @@ defmodule Quote do
   @doc """
   Persists a `%Quote{}` in the database from the given payload.
   """
-  @spec insert(map()) :: {:ok, %Quote{}} | {:error, String.t()}
+  @spec insert(map()) :: {:ok, %Ranking.Quote{}} | {:error, String.t()}
   def insert(payload) do
-    %Quote{}
+    %Ranking.Quote{}
     |> changeset(payload)
     |> Repo.insert()
   end

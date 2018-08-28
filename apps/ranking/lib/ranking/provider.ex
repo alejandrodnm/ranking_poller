@@ -1,4 +1,4 @@
-defmodule Provider do
+defmodule Ranking.Provider do
   @moduledoc """
   Handles the requests against the ranking provider
   """

@@ -1,4 +1,6 @@
 defmodule Web.Resolvers.Coin do
+  alias Ranking.Coin
+
   @moduledoc """
   GraphQL Coin resolver
   """
