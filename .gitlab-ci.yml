@@ -1,6 +1,4 @@
 image: elixir:1.7.2
-services:
-  - postgres:latest
 
 variables:
   POSTGRES_DB: ranking_poller_test
@@ -14,12 +12,36 @@ before_script:
   - mix local.hex --force
   - mix local.rebar --force
   - mix deps.get --only test
-  - mix ecto.create
-  - make migrate
 
-ex_tests:
+test-job:
+  stage: test
+  services:
+    - postgres:latest
+  before_script:
+    - apt-get update && apt-get -y install postgresql-client
+    - mix local.hex --force
+    - mix local.rebar --force
+    - mix deps.get --only test
+    - mix ecto.create
+    - make migrate
   script:
-    - make coverage
-    - make style
-  after_script:
-    - make docs-report
+    - mix inch --pedantic
+    - mix credo --strict
+    - mix coveralls -u
+
+check-types-job:
+  before_script:
+    - mix local.hex --force
+    - mix local.rebar --force
+    - mix deps.get --only dev
+  variables:
+    CI: "true"
+    MIX_ENV: dev
+  stage: test
+  script:
+    - mix compile
+    - mix dialyzer
+  cache:
+    key: one-key-to-rull-them-all
+    paths:
+      - .cache/
