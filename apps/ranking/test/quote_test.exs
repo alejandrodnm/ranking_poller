@@ -1,5 +1,4 @@
 defmodule Ranking.QuoteTest do
-  alias Ecto.Adapters.SQL.Sandbox
   alias Persistence.Repo
   alias Ranking.Quote
   alias Ranking.Test.Factory

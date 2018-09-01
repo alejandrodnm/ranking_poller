@@ -80,7 +80,7 @@ defmodule Ranking.Test.Factory do
     factory_name
     |> payload(opts)
     |> (&build(factory_name, &1)).()
-    |> Repo.insert!()
+    |> Repo.insert!(log: false)
   end
 
   @spec build(atom, map) :: struct

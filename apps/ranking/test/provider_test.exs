@@ -7,7 +7,7 @@ defmodule Ranking.ProviderTest do
 
   test "get ranking" do
     use_cassette "provider_get_ranking" do
-      {:ok, ranking} = Provider.get_ranking()
+      {:ok, _} = Provider.get_ranking()
     end
   end
 end
