@@ -5,7 +5,7 @@ defmodule Web.Router do
     plug(:accepts, ["json"])
   end
 
-  scope "/api" do
+  scope "/" do
     pipe_through(:api)
 
     forward("/graphiql", Absinthe.Plug.GraphiQL, schema: Web.Schema)
