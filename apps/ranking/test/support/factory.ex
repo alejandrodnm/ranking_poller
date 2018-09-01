@@ -4,8 +4,8 @@ defmodule Ranking.Test.Factory do
   """
   alias Persistence.Repo
   alias Ranking.Coin
-  alias Ranking.Import
   alias Ranking.Quote
+  alias Ranking.Results
   alias Ranking.Test.Payload
 
   @doc """
@@ -22,10 +22,10 @@ defmodule Ranking.Test.Factory do
   def payload(:quote, opts) do
     coin_id = insert!(:coin, coin_id: Keyword.get(opts, :coin_id, 1)).id
 
-    ranking_import_id =
-      case Keyword.get(opts, :ranking_import_id) do
-        nil -> insert!(:ranking_import).id
-        ranking_import_id -> ranking_import_id
+    results_id =
+      case Keyword.get(opts, :results_id) do
+        nil -> insert!(:results).id
+        results_id -> results_id
       end
 
     coin_payload = payload(:coin, coin_id: coin_id)
@@ -44,11 +44,11 @@ defmodule Ranking.Test.Factory do
       "circulating_supply" => coin_payload["circulating_supply"],
       "total_supply" => coin_payload["total_supply"],
       "max_supply" => coin_payload["max_supply"],
-      "ranking_import_id" => ranking_import_id
+      "results_id" => results_id
     }
   end
 
-  def payload(:ranking_import, opts) do
+  def payload(:results, opts) do
     metadata_payload = Payload.get()["metadata"]
 
     %{
@@ -60,7 +60,7 @@ defmodule Ranking.Test.Factory do
 
   @spec insert!(atom) :: struct
   def insert!(:all) do
-    ranking_import_id = insert!(:ranking_import).id
+    results_id = insert!(:results).id
 
     Payload.get()
     |> Map.get("data")
@@ -69,7 +69,7 @@ defmodule Ranking.Test.Factory do
       insert!(
         :quote,
         coin_id: String.to_integer(coin_id),
-        ranking_import_id: ranking_import_id
+        results_id: results_id
       )
     end)
   end
@@ -82,8 +82,8 @@ defmodule Ranking.Test.Factory do
   end
 
   @spec build(atom, map) :: struct
-  defp build(:ranking_import, payload) do
-    %Import{
+  defp build(:results, payload) do
+    %Results{
       timestamp: payload["timestamp"],
       num_cryptocurrencies: payload["num_cryptocurrencies"],
       error: payload["error"]
@@ -113,7 +113,7 @@ defmodule Ranking.Test.Factory do
       circulating_supply: payload["circulating_supply"],
       total_supply: payload["total_supply"],
       max_supply: payload["max_supply"],
-      ranking_import_id: payload["ranking_import_id"]
+      results_id: payload["results_id"]
     }
   end
 end

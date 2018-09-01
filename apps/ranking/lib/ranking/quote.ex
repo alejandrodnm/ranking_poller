@@ -4,7 +4,7 @@ defmodule Ranking.Quote do
   """
   alias Persistence.Repo
   alias Ranking.Coin
-  alias Ranking.Import
+  alias Ranking.Results
   import Ecto.Changeset
   use Ecto.Schema
 
@@ -21,7 +21,7 @@ defmodule Ranking.Quote do
     field(:total_supply, :decimal)
     field(:max_supply, :decimal)
     belongs_to(:coin, Coin, references: :id)
-    belongs_to(:ranking_import, Import)
+    belongs_to(:results, Results)
   end
 
   @doc """
@@ -45,9 +45,10 @@ defmodule Ranking.Quote do
       :circulating_supply,
       :total_supply,
       :max_supply,
-      :ranking_import_id
+      :results_id
     ])
     |> foreign_key_constraint(:coin_id)
+    |> foreign_key_constraint(:results_id)
   end
 
   @doc """

@@ -9,7 +9,7 @@ defmodule Ranking do
   Executes the import job that fetches the current ranking and stores
   it in the database.
   """
-  def fetch_current do
+  def fetch_current_results do
     Import.run()
   end
 

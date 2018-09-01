@@ -1,40 +1,18 @@
 defmodule Ranking.Import do
   @moduledoc """
-  Represents an import job for the quotes
+  Imports new results from the provider and persists them in the
+  database
   """
   alias Ecto.Multi
   alias Persistence.Repo
   alias Ranking.Coin
   alias Ranking.Provider
   alias Ranking.Quote
+  alias Ranking.Results
   import Ecto.Changeset
   use Ecto.Schema
 
   @typep quote_extra_data :: %{required(String.t()) => pos_integer}
-
-  schema "ranking_import" do
-    timestamps(type: :utc_datetime, updated_at: false)
-    field(:timestamp, :integer)
-    field(:num_cryptocurrencies, :integer)
-    field(:error, :string)
-    has_many(:quotes, Quote)
-  end
-
-  @doc """
-  Validates the attributes of a `Map` against the `Ranking.Import` schema.
-  """
-  @spec changeset(%Ranking.Import{}, map()) :: Ecto.Changeset.t()
-  def changeset(ranking_import, attrs \\ %{}) do
-    ranking_import
-    |> cast(attrs, [:timestamp, :num_cryptocurrencies, :error])
-  end
-
-  @spec insert(map()) :: {:ok, %Ranking.Import{}} | {:error, String.t()}
-  def insert(payload) do
-    %Ranking.Import{}
-    |> changeset(payload)
-    |> Repo.insert()
-  end
 
   @doc """
   Fetches the current ranking from the provider, processes the output
@@ -45,14 +23,17 @@ defmodule Ranking.Import do
     {:ok, ranking} = Provider.get_ranking()
 
     Multi.new()
-    |> Multi.insert(:ranking_import, changeset(%Ranking.Import{}, ranking["metadata"]))
-    |> Multi.merge(fn %{ranking_import: ranking_import} ->
+    |> Multi.insert(
+      :results,
+      Results.changeset(%Results{}, ranking["metadata"])
+    )
+    |> Multi.merge(fn %{results: results} ->
       Multi.new()
       |> process_coin(
         Map.to_list(ranking["data"]),
         %{
           "timestamp" => ranking["metadata"]["timestamp"],
-          "ranking_import_id" => ranking_import.id
+          "results_id" => results.id
         }
       )
     end)
