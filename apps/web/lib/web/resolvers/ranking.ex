@@ -1,9 +1,14 @@
 defmodule Web.Resolvers.Ranking do
+  alias Ranking.Quote
   alias Ranking.Results
 
   @moduledoc """
   Coin resolver
   """
+  def get_coin(%Quote{} = parent, _args, _resolution) do
+    {:ok, Ranking.get_coin(parent)}
+  end
+
   def get_coins(_parent, _args, _resolution) do
     {:ok, Ranking.get_coins()}
   end

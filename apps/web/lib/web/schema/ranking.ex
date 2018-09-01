@@ -16,10 +16,11 @@ defmodule Web.Schema.Ranking do
   object :quote do
     field(:id, :id)
     field(:percent_change_7d, :decimal)
+    # TODO more fields
 
-    # field :coin, :coin do
-    #   resolve(&Ranking.get_coin/3)
-    # end
+    field :coin, :coin do
+      resolve(&Ranking.get_coin/3)
+    end
   end
 
   input_object :results_filter do

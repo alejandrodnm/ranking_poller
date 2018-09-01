@@ -25,7 +25,7 @@ defmodule Ranking.Quote do
   end
 
   @doc """
-  Validates the attributes of a `Map` against the `Ranking.Quote`
+  Validates the attributes of a `Map` against the `Ranking.Ranking.Quote`
   schema, it also checks that the coin that the quote belongs to
   exists in the database.
   """
@@ -52,17 +52,12 @@ defmodule Ranking.Quote do
   end
 
   @doc """
-  Persists a `%Quote{}` in the database from the given payload.
+  Persists a `%Ranking.Quote{}` in the database from the given payload.
   """
-  @spec insert(map()) :: {:ok, %__MODULE__{}} | {:error, String.t()}
+  @spec insert(map()) :: {:ok, %Ranking.Quote{}} | {:error, String.t()}
   def insert(payload) do
     %Ranking.Quote{}
     |> changeset(payload)
     |> Repo.insert()
-  end
-
-  @spec get_quotes(%Results{}) :: [%__MODULE__{}]
-  def get_quotes(results) do
-    Repo.all(Ecto.assoc(results, :quotes))
   end
 end

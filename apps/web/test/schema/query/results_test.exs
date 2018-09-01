@@ -16,7 +16,11 @@ defmodule Web.Schema.Query.ResultsTest do
       num_cryptocurrencies,
       error,
       quotes {
-        percent_change_7d
+        percent_change_7d,
+        coin {
+          name,
+          symbol
+        }
       }
     }
   }
@@ -38,9 +42,18 @@ defmodule Web.Schema.Query.ResultsTest do
             "timestamp" => 1_535_794_922,
             "inserted_at" => DateTime.to_iso8601(results.inserted_at),
             "quotes" => [
-              %{"percent_change_7d" => "5.05"},
-              %{"percent_change_7d" => "4.13"},
-              %{"percent_change_7d" => "2.49"}
+              %{
+                "percent_change_7d" => "5.05",
+                "coin" => %{"name" => "Bitcoin", "symbol" => "BTC"}
+              },
+              %{
+                "percent_change_7d" => "4.13",
+                "coin" => %{"name" => "XRP", "symbol" => "XRP"}
+              },
+              %{
+                "percent_change_7d" => "2.49",
+                "coin" => %{"name" => "Ethereum", "symbol" => "ETH"}
+              }
             ]
           }
         }
