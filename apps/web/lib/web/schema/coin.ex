@@ -1,4 +1,4 @@
-defmodule Web.Schema.ContentTypes do
+defmodule Web.Schema.Coin do
   @moduledoc """
   GraphQL types
   """

@@ -5,6 +5,7 @@ defmodule Ranking.Coin do
   alias Persistence.Repo
   alias Ranking.Quote
   import Ecto.Changeset
+  import Ecto.Query
   use Ecto.Schema
 
   @primary_key false
@@ -45,5 +46,10 @@ defmodule Ranking.Coin do
     %Ranking.Coin{}
     |> changeset(payload)
     |> Repo.insert(on_conflict: :nothing)
+  end
+
+  @spec get_coins() :: [%Ranking.Coin{}]
+  def get_coins do
+    Repo.all(from(Ranking.Coin))
   end
 end

@@ -4,10 +4,9 @@ defmodule Web.Schema do
   """
   alias Web.Resolvers.Coin
   use Absinthe.Schema
-  import_types(Web.Schema.ContentTypes)
+  import_types(__MODULE__.Coin)
 
   query do
-    @desc "Get all coins"
     field :coins, list_of(:coin) do
       resolve(&Coin.list_coins/3)
     end

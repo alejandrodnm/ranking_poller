@@ -2,6 +2,7 @@ defmodule Ranking do
   @moduledoc """
   Maintains the ranking of the virtual coins.
   """
+  alias Ranking.Coin
   alias Ranking.Import
 
   @doc """
@@ -10,5 +11,10 @@ defmodule Ranking do
   """
   def fetch_current do
     Import.run()
+  end
+
+  @spec get_coins() :: [%Ranking.Coin{}]
+  def get_coins do
+    Coin.get_coins()
   end
 end
