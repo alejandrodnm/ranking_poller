@@ -60,18 +60,20 @@ defmodule Ranking.Test.Factory do
 
   @spec insert!(atom) :: struct
   def insert!(:all) do
-    results_id = insert!(:results).id
+    results = insert!(:results)
 
     Payload.get()
     |> Map.get("data")
     |> Map.keys()
-    |> Enum.map(fn coin_id ->
+    |> Enum.each(fn coin_id ->
       insert!(
         :quote,
         coin_id: String.to_integer(coin_id),
-        results_id: results_id
+        results_id: results.id
       )
     end)
+
+    results
   end
 
   def insert!(factory_name, opts \\ []) do

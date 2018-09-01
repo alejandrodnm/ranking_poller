@@ -5,6 +5,7 @@ defmodule Ranking.Results do
   alias Persistence.Repo
   alias Ranking.Quote
   import Ecto.Changeset
+  import Ecto.Query
   use Ecto.Schema
 
   @typep quote_extra_data :: %{required(String.t()) => pos_integer}
@@ -31,5 +32,10 @@ defmodule Ranking.Results do
     %Ranking.Results{}
     |> changeset(payload)
     |> Repo.insert()
+  end
+
+  @spec get_results() :: [%Ranking.Results{}]
+  def get_results do
+    Repo.all(from(Ranking.Results))
   end
 end
