@@ -11,6 +11,7 @@ defmodule Web.Schema.Query.ResultsTest do
   {
     results {
       id,
+      inserted_at,
       timestamp,
       num_cryptocurrencies,
       error
@@ -29,7 +30,8 @@ defmodule Web.Schema.Query.ResultsTest do
                    "error" => nil,
                    "id" => Integer.to_string(results.id),
                    "num_cryptocurrencies" => 1910,
-                   "timestamp" => 1_535_794_922
+                   "timestamp" => 1_535_794_922,
+                   "inserted_at" => DateTime.to_iso8601(results.inserted_at)
                  }
                ]
              }
