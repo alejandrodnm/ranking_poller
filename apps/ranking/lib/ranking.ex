@@ -4,6 +4,7 @@ defmodule Ranking do
   """
   alias Ranking.Coin
   alias Ranking.Import
+  alias Ranking.Quote
   alias Ranking.Results
 
   @doc """
@@ -14,13 +15,18 @@ defmodule Ranking do
     Import.run()
   end
 
-  @spec get_results() :: [%Ranking.Results{}]
-  def get_results do
-    Results.get_results()
+  @spec get_results(Date.t()) :: %Results{}
+  def get_results(date) do
+    Results.get_results(date)
   end
 
-  @spec get_coins() :: [%Ranking.Coin{}]
+  @spec get_coins() :: [%Coin{}]
   def get_coins do
     Coin.get_coins()
+  end
+
+  @spec get_quotes(%Results{}) :: [%Quote{}]
+  def get_quotes(results) do
+    Quote.get_quotes(results)
   end
 end

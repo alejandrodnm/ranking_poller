@@ -34,8 +34,13 @@ defmodule Ranking.Results do
     |> Repo.insert()
   end
 
-  @spec get_results() :: [%Ranking.Results{}]
-  def get_results do
-    Repo.all(from(Ranking.Results))
+  @spec get_results(Date.t()) :: %Ranking.Results{}
+  def get_results(date) do
+    Repo.one(
+      from(
+        r in Ranking.Results,
+        where: fragment("?::date", r.inserted_at) == ^date
+      )
+    )
   end
 end

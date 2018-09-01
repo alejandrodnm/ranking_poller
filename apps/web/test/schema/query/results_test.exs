@@ -8,33 +8,43 @@ defmodule Web.Schema.Query.ResultsTest do
   end
 
   @query """
-  {
-    results {
+  query ($filter: ResultsFilter!) {
+    results(filter: $filter) {
       id,
       inserted_at,
       timestamp,
       num_cryptocurrencies,
-      error
+      error,
+      quotes {
+        percent_change_7d
+      }
     }
   }
   """
 
   test "results field returns a list of results", %{results: results} do
     conn = build_conn()
-    conn = get(conn, "/api", query: @query)
+    date = Date.to_iso8601(results.inserted_at)
+    variables = %{filter: %{date: date}}
+    conn = get(conn, "/api", query: @query, variables: variables)
 
-    assert json_response(conn, 200) == %{
-             "data" => %{
-               "results" => [
-                 %{
-                   "error" => nil,
-                   "id" => Integer.to_string(results.id),
-                   "num_cryptocurrencies" => 1910,
-                   "timestamp" => 1_535_794_922,
-                   "inserted_at" => DateTime.to_iso8601(results.inserted_at)
-                 }
-               ]
-             }
-           }
+    assert(
+      json_response(conn, 200) == %{
+        "data" => %{
+          "results" => %{
+            "error" => nil,
+            "id" => Integer.to_string(results.id),
+            "num_cryptocurrencies" => 1910,
+            "timestamp" => 1_535_794_922,
+            "inserted_at" => DateTime.to_iso8601(results.inserted_at),
+            "quotes" => [
+              %{"percent_change_7d" => "5.05"},
+              %{"percent_change_7d" => "4.13"},
+              %{"percent_change_7d" => "2.49"}
+            ]
+          }
+        }
+      }
+    )
   end
 end

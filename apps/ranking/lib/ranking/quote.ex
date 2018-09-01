@@ -54,10 +54,15 @@ defmodule Ranking.Quote do
   @doc """
   Persists a `%Quote{}` in the database from the given payload.
   """
-  @spec insert(map()) :: {:ok, %Ranking.Quote{}} | {:error, String.t()}
+  @spec insert(map()) :: {:ok, %__MODULE__{}} | {:error, String.t()}
   def insert(payload) do
     %Ranking.Quote{}
     |> changeset(payload)
     |> Repo.insert()
+  end
+
+  @spec get_quotes(%Results{}) :: [%__MODULE__{}]
+  def get_quotes(results) do
+    Repo.all(Ecto.assoc(results, :quotes))
   end
 end
