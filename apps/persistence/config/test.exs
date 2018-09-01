@@ -7,4 +7,5 @@ config :persistence, Persistence.Repo,
   password: System.get_env("POSTGRES_PASSWORD") || "postgres",
   database: System.get_env("POSTGRES_DB") || "ranking_poller_test",
   hostname: System.get_env("POSTGRES_HOST") || "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+  pool: Ecto.Adapters.SQL.Sandbox,
+  log: false
