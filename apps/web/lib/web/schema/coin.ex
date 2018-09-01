@@ -7,5 +7,7 @@ defmodule Web.Schema.Coin do
   object :coin do
     field(:id, :id)
     field(:name, :string)
+    field(:website_slug, :string)
+    field(:symbol, :string)
   end
 end

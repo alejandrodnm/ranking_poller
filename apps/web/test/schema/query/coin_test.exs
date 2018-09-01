@@ -4,7 +4,7 @@ defmodule Web.Schema.Query.CoinTest do
   use Persistence.DataCase
 
   setup do
-    Factory.insert!(:coin)
+    Factory.insert!(:all)
     :ok
   end
 
@@ -12,7 +12,9 @@ defmodule Web.Schema.Query.CoinTest do
   {
     coins {
       id,
-      name
+      name,
+      website_slug,
+      symbol
     }
   }
   """
@@ -24,7 +26,24 @@ defmodule Web.Schema.Query.CoinTest do
     assert json_response(conn, 200) == %{
              "data" => %{
                "coins" => [
-                 %{"id" => 1, "name" => "BTC"}
+                 %{
+                   "id" => "1",
+                   "name" => "Bitcoin",
+                   "symbol" => "BTC",
+                   "website_slug" => "bitcoin"
+                 },
+                 %{
+                   "id" => "1027",
+                   "name" => "Ethereum",
+                   "symbol" => "ETH",
+                   "website_slug" => "ethereum"
+                 },
+                 %{
+                   "id" => "52",
+                   "name" => "XRP",
+                   "symbol" => "XRP",
+                   "website_slug" => "ripple"
+                 }
                ]
              }
            }
