@@ -2,6 +2,7 @@ defmodule Ranking do
   @moduledoc """
   Maintains the ranking of the virtual coins.
   """
+  import Ecto.Query
   alias Persistence.Repo
   alias Ranking.Coin
   alias Ranking.Import
@@ -26,9 +27,12 @@ defmodule Ranking do
     Coin.get_coins()
   end
 
-  @spec get_coin(%Quote{}) :: %Coin{}
-  def get_coin(quote) do
-    Repo.one(Ecto.assoc(quote, :coin))
+  @spec get_coin(list, pos_integer) :: %Coin{}
+  def get_coin(a, coins_ids) do
+    Coin
+    |> where([coin], coin.id in ^Enum.uniq(coins_ids))
+    |> Repo.all()
+    |> Map.new(fn coin -> {coin.id, coin} end)
   end
 
   @spec get_quotes(%Results{}) :: [%Quote{}]

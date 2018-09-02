@@ -2,8 +2,9 @@ defmodule Web.Schema.Ranking do
   @moduledoc """
   GraphQL Ranking types
   """
-  alias Web.Resolvers.Ranking
   use Absinthe.Schema.Notation
+  alias Web.Resolvers.Ranking
+
   import_types(Absinthe.Type.Custom)
 
   object :coin do

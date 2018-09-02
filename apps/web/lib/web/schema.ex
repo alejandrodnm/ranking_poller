@@ -3,7 +3,21 @@ defmodule Web.Schema do
   GraphQL schema
   """
   alias Web.Resolvers.Ranking
+  alias Web.Schema.Middleware
   use Absinthe.Schema
+
+  def middleware(middleware, field, object) do
+    middleware
+    |> apply(:debug, field, object)
+  end
+
+  defp apply(middleware, :debug, _field, _object) do
+    if System.get_env("DEBUG") do
+      [{Middleware.Debug, :start}] ++ middleware
+    else
+      middleware
+    end
+  end
 
   import_types(__MODULE__.Ranking)
 
