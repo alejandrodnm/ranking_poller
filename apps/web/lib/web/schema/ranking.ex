@@ -3,6 +3,7 @@ defmodule Web.Schema.Ranking do
   GraphQL Ranking types
   """
   use Absinthe.Schema.Notation
+  use Absinthe.Relay.Schema.Notation, :modern
 
   import Absinthe.Resolution.Helpers
 
@@ -38,8 +39,7 @@ defmodule Web.Schema.Ranking do
     non_null(field(:date, :date))
   end
 
-  object :results do
-    field(:id, :id)
+  node object(:results) do
     field(:inserted_at, :datetime)
     field(:timestamp, :integer)
     field(:num_cryptocurrencies, :integer)

@@ -34,6 +34,16 @@ defmodule Ranking.Results do
     |> Repo.insert()
   end
 
+  @spec get_results(pos_integer) :: %Ranking.Results{}
+  def get_results(id) when is_integer(id) do
+    Repo.one(
+      from(
+        r in Ranking.Results,
+        where: r.id == ^id
+      )
+    )
+  end
+
   @spec get_results(Date.t()) :: %Ranking.Results{}
   def get_results(date) do
     Repo.one(

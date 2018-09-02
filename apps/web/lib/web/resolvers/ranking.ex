@@ -26,6 +26,10 @@ defmodule Web.Resolvers.Ranking do
     {:ok, Ranking.get_results(date)}
   end
 
+  def get_results(results_id) do
+    {:ok, Ranking.get_results(results_id)}
+  end
+
   @moduledoc """
   Quotes resolver
   """

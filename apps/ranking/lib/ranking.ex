@@ -18,12 +18,17 @@ defmodule Ranking do
     Import.run()
   end
 
-  def data() do
+  def data do
     Dataloader.Ecto.new(Repo, query: &query/2)
   end
 
   def query(queryable, _) do
     queryable
+  end
+
+  @spec get_results(pos_integer) :: %Results{}
+  def get_results(id) when is_integer(id) do
+    Results.get_results(id)
   end
 
   @spec get_results(Date.t()) :: %Results{}

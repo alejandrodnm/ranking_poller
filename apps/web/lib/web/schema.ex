@@ -3,8 +3,10 @@ defmodule Web.Schema do
   GraphQL schema
   """
   use Absinthe.Schema
+  use Absinthe.Relay.Schema, :modern
 
   alias Absinthe.Plugin
+  alias Ranking.Results
   alias Web.Resolvers
   alias Web.Schema.Middleware
 
@@ -36,7 +38,27 @@ defmodule Web.Schema do
 
   import_types(__MODULE__.Ranking)
 
+  node interface do
+    resolve_type(fn
+      %Results{}, _ ->
+        :results
+
+      _, _ ->
+        nil
+    end)
+  end
+
   query do
+    node field do
+      resolve(fn
+        %{type: :results, id: results_id}, _ ->
+          Resolvers.Ranking.get_results(String.to_integer(results_id))
+
+        _, _ ->
+          {:error, "Unkown node"}
+      end)
+    end
+
     field :coins, list_of(:coin) do
       resolve(&Resolvers.Ranking.get_coins/3)
     end
