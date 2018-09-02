@@ -3,7 +3,8 @@ defmodule Web.Schema.Ranking do
   GraphQL Ranking types
   """
   use Absinthe.Schema.Notation
-  alias Web.Resolvers.Ranking
+
+  import Absinthe.Resolution.Helpers
 
   import_types(Absinthe.Type.Custom)
 
@@ -29,7 +30,7 @@ defmodule Web.Schema.Ranking do
     field(:max_supply, :decimal)
 
     field :coin, :coin do
-      resolve(&Ranking.get_coin/3)
+      resolve(dataloader(Ranking, :coin))
     end
   end
 
@@ -45,7 +46,7 @@ defmodule Web.Schema.Ranking do
     field(:error, :string)
 
     field :quotes, list_of(:quote) do
-      resolve(&Ranking.get_quotes/3)
+      resolve(dataloader(Ranking, :quotes))
     end
   end
 end

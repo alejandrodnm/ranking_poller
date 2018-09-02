@@ -35,7 +35,8 @@ defmodule Ranking.MixProject do
       {:exvcr, "~> 0.10", only: :test},
       {:jason, "~> 1.1"},
       {:persistence, in_umbrella: true},
-      {:decimal, "~> 1.0"}
+      {:decimal, "~> 1.0"},
+      {:dataloader, "~> 1.0.0"}
     ]
   end
 end

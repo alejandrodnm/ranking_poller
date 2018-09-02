@@ -3,6 +3,7 @@ defmodule Ranking do
   Maintains the ranking of the virtual coins.
   """
   import Ecto.Query
+
   alias Persistence.Repo
   alias Ranking.Coin
   alias Ranking.Import
@@ -15,6 +16,14 @@ defmodule Ranking do
   """
   def fetch_current_results do
     Import.run()
+  end
+
+  def data() do
+    Dataloader.Ecto.new(Repo, query: &query/2)
+  end
+
+  def query(queryable, _) do
+    queryable
   end
 
   @spec get_results(Date.t()) :: %Results{}

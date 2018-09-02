@@ -1,14 +1,17 @@
 defmodule Web.Resolvers.Ranking do
-  import Absinthe.Resolution.Helpers, only: [batch: 3]
+  import Absinthe.Resolution.Helpers, only: [on_load: 2]
   alias Ranking.Quote
   alias Ranking.Results
 
   @moduledoc """
   Coin resolver
   """
-  def get_coin(%Quote{} = quote_, _args, _resolution) do
-    batch({Ranking, :get_coin}, quote_.coin_id, fn coins ->
-      {:ok, Map.get(coins, quote_.coin_id)}
+  def get_coin(%Quote{} = quote_, _args, %{context: %{loader: loader}}) do
+    loader
+    |> Dataloader.load(Ranking, :coin, quote_)
+    |> on_load(fn loader ->
+      coin = Dataloader.get(loader, Ranking, :coin, quote_)
+      {:ok, coin}
     end)
   end
 
