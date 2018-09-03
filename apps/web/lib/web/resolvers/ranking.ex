@@ -33,7 +33,11 @@ defmodule Web.Resolvers.Ranking do
   @moduledoc """
   Quotes resolver
   """
-  def get_quotes(%Results{} = parent, _args, _resolution) do
-    {:ok, Ranking.get_quotes(parent)}
+  def get_quotes(%Results{} = results, args, _resolution) do
+    Absinthe.Relay.Connection.from_query(
+      Ranking.get_quotes(results, args),
+      &Persistence.Repo.all/1,
+      args
+    )
   end
 end

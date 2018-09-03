@@ -6,8 +6,11 @@ defmodule Web.Schema.Ranking do
   use Absinthe.Relay.Schema.Notation, :modern
 
   import Absinthe.Resolution.Helpers
+  alias Web.Resolvers
 
   import_types(Absinthe.Type.Custom)
+
+  connection(node_type: :quote)
 
   object :coin do
     field(:id, :id)
@@ -16,7 +19,7 @@ defmodule Web.Schema.Ranking do
     field(:symbol, :string)
   end
 
-  object :quote do
+  node object(:quote) do
     field(:id, :id)
     field(:inserted_at, :datetime)
     field(:price, :decimal)
@@ -45,8 +48,8 @@ defmodule Web.Schema.Ranking do
     field(:num_cryptocurrencies, :integer)
     field(:error, :string)
 
-    field :quotes, list_of(:quote) do
-      resolve(dataloader(Ranking, :quotes))
+    connection field(:quotes, node_type: :quote) do
+      resolve(&Resolvers.Ranking.get_quotes/3)
     end
   end
 end

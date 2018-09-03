@@ -16,11 +16,19 @@ defmodule Web.Schema.Query.ResultsTest do
         timestamp,
         num_cryptocurrencies,
         error,
-        quotes {
-          percent_change_7d,
-          coin {
-            name,
-            symbol
+        quotes (first: 2) {
+          page_info {
+            end_cursor
+            start_cursor
+          }
+          edges {
+            node {
+              percent_change_7d
+              coin {
+                id,
+                name
+              }
+            }
           }
         }
       }
@@ -42,20 +50,26 @@ defmodule Web.Schema.Query.ResultsTest do
             "num_cryptocurrencies" => 1910,
             "timestamp" => 1_535_794_922,
             "inserted_at" => DateTime.to_iso8601(results.inserted_at),
-            "quotes" => [
-              %{
-                "percent_change_7d" => "5.05",
-                "coin" => %{"name" => "Bitcoin", "symbol" => "BTC"}
-              },
-              %{
-                "percent_change_7d" => "4.13",
-                "coin" => %{"name" => "XRP", "symbol" => "XRP"}
-              },
-              %{
-                "percent_change_7d" => "2.49",
-                "coin" => %{"name" => "Ethereum", "symbol" => "ETH"}
+            "quotes" => %{
+              "edges" => [
+                %{
+                  "node" => %{
+                    "coin" => %{"id" => "1", "name" => "Bitcoin"},
+                    "percent_change_7d" => "5.05"
+                  }
+                },
+                %{
+                  "node" => %{
+                    "coin" => %{"id" => "1027", "name" => "Ethereum"},
+                    "percent_change_7d" => "2.49"
+                  }
+                }
+              ],
+              "page_info" => %{
+                "end_cursor" => "YXJyYXljb25uZWN0aW9uOjE=",
+                "start_cursor" => "YXJyYXljb25uZWN0aW9uOjA="
               }
-            ]
+            }
           }
         }
       }
@@ -74,11 +88,19 @@ defmodule Web.Schema.Query.ResultsTest do
           timestamp,
           num_cryptocurrencies,
           error,
-          quotes {
-            percent_change_7d,
-            coin {
-              name,
-              symbol
+          quotes (first: 2) {
+            page_info {
+              end_cursor
+              start_cursor
+            }
+            edges {
+              node {
+                percent_change_7d
+                coin {
+                  id,
+                  name
+                }
+              }
             }
           }
         }
@@ -98,17 +120,26 @@ defmodule Web.Schema.Query.ResultsTest do
             "id" => id,
             "inserted_at" => DateTime.to_iso8601(results.inserted_at),
             "num_cryptocurrencies" => 1910,
-            "quotes" => [
-              %{
-                "coin" => %{"name" => "Bitcoin", "symbol" => "BTC"},
-                "percent_change_7d" => "5.05"
-              },
-              %{"coin" => %{"name" => "XRP", "symbol" => "XRP"}, "percent_change_7d" => "4.13"},
-              %{
-                "coin" => %{"name" => "Ethereum", "symbol" => "ETH"},
-                "percent_change_7d" => "2.49"
+            "quotes" => %{
+              "edges" => [
+                %{
+                  "node" => %{
+                    "coin" => %{"id" => "1", "name" => "Bitcoin"},
+                    "percent_change_7d" => "5.05"
+                  }
+                },
+                %{
+                  "node" => %{
+                    "coin" => %{"id" => "1027", "name" => "Ethereum"},
+                    "percent_change_7d" => "2.49"
+                  }
+                }
+              ],
+              "page_info" => %{
+                "end_cursor" => "YXJyYXljb25uZWN0aW9uOjE=",
+                "start_cursor" => "YXJyYXljb25uZWN0aW9uOjA="
               }
-            ],
+            },
             "timestamp" => 1_535_794_922
           }
         }

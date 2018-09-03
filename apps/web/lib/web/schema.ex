@@ -6,6 +6,7 @@ defmodule Web.Schema do
   use Absinthe.Relay.Schema, :modern
 
   alias Absinthe.Plugin
+  alias Ranking.Quote
   alias Ranking.Results
   alias Web.Resolvers
   alias Web.Schema.Middleware
@@ -42,6 +43,9 @@ defmodule Web.Schema do
     resolve_type(fn
       %Results{}, _ ->
         :results
+
+      %Ranking.Quote{}, _ ->
+        :quote
 
       _, _ ->
         nil
