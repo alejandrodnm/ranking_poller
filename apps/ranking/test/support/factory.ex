@@ -4,15 +4,15 @@ defmodule Ranking.Test.Factory do
   """
   alias Persistence.Repo
   alias Ranking.Coin
+  alias Ranking.Import
   alias Ranking.Quote
-  alias Ranking.Results
   alias Ranking.Test.Payload
 
   @doc """
   Returns a map with all the elementes necessary for creating the
   given structure.
   """
-  def payload(factory_name, opt \\ [])
+  def payload(factory_name, opts \\ [])
 
   def payload(:coin, opts) do
     coin_id = opts |> Keyword.get(:coin_id, 1) |> Integer.to_string()
@@ -22,10 +22,10 @@ defmodule Ranking.Test.Factory do
   def payload(:quote, opts) do
     coin_id = insert!(:coin, coin_id: Keyword.get(opts, :coin_id, 1)).id
 
-    results_id =
-      case Keyword.get(opts, :results_id) do
-        nil -> insert!(:results).id
-        results_id -> results_id
+    import_id =
+      case Keyword.get(opts, :import_id) do
+        nil -> insert!(:import).id
+        import_id -> import_id
       end
 
     coin_payload = payload(:coin, coin_id: coin_id)
@@ -44,11 +44,11 @@ defmodule Ranking.Test.Factory do
       "circulating_supply" => coin_payload["circulating_supply"],
       "total_supply" => coin_payload["total_supply"],
       "max_supply" => coin_payload["max_supply"],
-      "results_id" => results_id
+      "import_id" => import_id
     }
   end
 
-  def payload(:results, opts) do
+  def payload(:import, opts) do
     metadata_payload = Payload.get()["metadata"]
 
     %{
@@ -60,7 +60,7 @@ defmodule Ranking.Test.Factory do
 
   @spec insert!(atom) :: struct
   def insert!(:all) do
-    results = insert!(:results)
+    import_ = insert!(:import)
 
     Payload.get()
     |> Map.get("data")
@@ -69,11 +69,11 @@ defmodule Ranking.Test.Factory do
       insert!(
         :quote,
         coin_id: String.to_integer(coin_id),
-        results_id: results.id
+        import_id: import_.id
       )
     end)
 
-    results
+    import_
   end
 
   def insert!(factory_name, opts \\ []) do
@@ -84,8 +84,8 @@ defmodule Ranking.Test.Factory do
   end
 
   @spec build(atom, map) :: struct
-  defp build(:results, payload) do
-    %Results{
+  defp build(:import, payload) do
+    %Import{
       timestamp: payload["timestamp"],
       num_cryptocurrencies: payload["num_cryptocurrencies"],
       error: payload["error"]
@@ -115,7 +115,7 @@ defmodule Ranking.Test.Factory do
       circulating_supply: payload["circulating_supply"],
       total_supply: payload["total_supply"],
       max_supply: payload["max_supply"],
-      results_id: payload["results_id"]
+      import_id: payload["import_id"]
     }
   end
 end

@@ -5,8 +5,8 @@ defmodule Ranking do
   import Ecto.Query
   alias Persistence.Repo
   alias Ranking.Coin
+  alias Ranking.Import
   alias Ranking.Quote
-  alias Ranking.Results
 
   def data do
     Dataloader.Ecto.new(Repo, query: &query/2)
@@ -16,14 +16,9 @@ defmodule Ranking do
     queryable
   end
 
-  @spec get_results(pos_integer) :: %Results{}
-  def get_results(id) when is_integer(id) do
-    Results.get_results(id)
-  end
-
-  @spec get_results(Date.t()) :: %Results{}
-  def get_results(date) do
-    Results.get_results(date)
+  @spec get_import(pos_integer) :: %Import{}
+  def get_import(id) when is_integer(id) do
+    Import.get_import(id)
   end
 
   @spec get_coins() :: [%Coin{}]
@@ -32,15 +27,15 @@ defmodule Ranking do
   end
 
   @spec get_coin(list, pos_integer) :: %Coin{}
-  def get_coin(a, coins_ids) do
+  def get_coin(_, coins_ids) do
     Coin
     |> where([coin], coin.id in ^Enum.uniq(coins_ids))
     |> Repo.all()
     |> Map.new(fn coin -> {coin.id, coin} end)
   end
 
-  @spec get_quotes(%Results{}, any) :: [%Quote{}]
-  def get_quotes(results, args) do
+  @spec get_quotes(%Import{}, any) :: [%Quote{}]
+  def get_quotes(_, args) do
     Enum.reduce(args, Quote, fn
       _, query ->
         query

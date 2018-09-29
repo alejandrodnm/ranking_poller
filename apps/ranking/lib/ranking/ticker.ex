@@ -17,7 +17,7 @@ defmodule Ranking.Ticker do
 
   def handle_info(:timeout, state) do
     Import.run()
-    {:noreply, state, get_timeout}
+    {:noreply, state, get_timeout()}
   end
 
   defp get_timeout do

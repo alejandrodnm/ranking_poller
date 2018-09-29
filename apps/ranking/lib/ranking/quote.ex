@@ -21,7 +21,7 @@ defmodule Ranking.Quote do
     field(:total_supply, :decimal)
     field(:max_supply, :decimal)
     belongs_to(:coin, Coin, references: :id)
-    belongs_to(:results, Results)
+    belongs_to(:import, Import)
   end
 
   @doc """
@@ -45,10 +45,10 @@ defmodule Ranking.Quote do
       :circulating_supply,
       :total_supply,
       :max_supply,
-      :results_id
+      :import_id
     ])
     |> foreign_key_constraint(:coin_id)
-    |> foreign_key_constraint(:results_id)
+    |> foreign_key_constraint(:import_id)
   end
 
   @doc """
