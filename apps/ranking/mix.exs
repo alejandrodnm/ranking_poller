@@ -20,7 +20,8 @@ defmodule Ranking.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger, :eex, :public_key]
+      extra_applications: [:logger, :eex, :public_key],
+      mod: {Ranking.Application, []}
     ]
   end
 

@@ -5,17 +5,8 @@ defmodule Ranking do
   import Ecto.Query
   alias Persistence.Repo
   alias Ranking.Coin
-  alias Ranking.Import
   alias Ranking.Quote
   alias Ranking.Results
-
-  @doc """
-  Executes the import job that fetches the current ranking and stores
-  it in the database.
-  """
-  def fetch_current_results do
-    Import.run()
-  end
 
   def data do
     Dataloader.Ecto.new(Repo, query: &query/2)
