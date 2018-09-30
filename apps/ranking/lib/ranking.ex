@@ -21,6 +21,11 @@ defmodule Ranking do
     Import.get_import(id)
   end
 
+  @spec get_import(Date.t()) :: %Import{}
+  def get_import(date) do
+    Import.get_import(date)
+  end
+
   @spec get_coins() :: [%Coin{}]
   def get_coins do
     Coin.get_coins()

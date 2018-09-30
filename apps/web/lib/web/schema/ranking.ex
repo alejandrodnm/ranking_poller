@@ -38,11 +38,11 @@ defmodule Web.Schema.Ranking do
     end
   end
 
-  input_object :results_filter do
+  input_object :import_filter do
     non_null(field(:date, :date))
   end
 
-  node object(:results) do
+  node object(:import) do
     field(:inserted_at, :datetime)
     field(:timestamp, :integer)
     field(:num_cryptocurrencies, :integer)

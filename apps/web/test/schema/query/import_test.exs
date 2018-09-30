@@ -1,16 +1,16 @@
-defmodule Web.Schema.Query.ResultsTest do
+defmodule Web.Schema.Query.ImportTest do
   alias Ranking.Test.Factory
   use Web.ConnCase
   use Persistence.DataCase
 
   setup do
-    [results: Factory.insert!(:all)]
+    [import: Factory.insert!(:all)]
   end
 
-  test "results field returns a results", %{results: results} do
+  test "import field returns a import", %{import: import_} do
     query = """
-    query ($filter: ResultsFilter!) {
-      results (filter: $filter) {
+    query ($filter: ImportFilter!) {
+      import (filter: $filter) {
         id,
         inserted_at,
         timestamp,
@@ -36,7 +36,7 @@ defmodule Web.Schema.Query.ResultsTest do
     """
 
     conn = build_conn()
-    date = Date.to_iso8601(results.inserted_at)
+    date = Date.to_iso8601(import_.inserted_at)
     variables = %{filter: %{date: date}}
     conn = get(conn, "/api", query: query, variables: variables)
     json = json_response(conn, 200)
@@ -44,12 +44,12 @@ defmodule Web.Schema.Query.ResultsTest do
     assert(
       json == %{
         "data" => %{
-          "results" => %{
+          "import" => %{
             "error" => nil,
-            "id" => json["data"]["results"]["id"],
+            "id" => json["data"]["import"]["id"],
             "num_cryptocurrencies" => 1910,
             "timestamp" => 1_535_794_922,
-            "inserted_at" => DateTime.to_iso8601(results.inserted_at),
+            "inserted_at" => DateTime.to_iso8601(import_.inserted_at),
             "quotes" => %{
               "edges" => [
                 %{
@@ -76,13 +76,13 @@ defmodule Web.Schema.Query.ResultsTest do
     )
   end
 
-  test "node returns results", %{results: results} do
-    id = Base.encode64("Results:#{results.id}")
+  test "node returns import", %{import: import_} do
+    id = Base.encode64("Import:#{import_.id}")
 
     query = """
     query {
       node (id: "#{id}") {
-        ...on Results {
+        ...on Import {
           id,
           inserted_at,
           timestamp,
@@ -118,7 +118,7 @@ defmodule Web.Schema.Query.ResultsTest do
           "node" => %{
             "error" => nil,
             "id" => id,
-            "inserted_at" => DateTime.to_iso8601(results.inserted_at),
+            "inserted_at" => DateTime.to_iso8601(import_.inserted_at),
             "num_cryptocurrencies" => 1910,
             "quotes" => %{
               "edges" => [

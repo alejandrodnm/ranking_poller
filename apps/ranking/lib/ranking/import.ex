@@ -48,6 +48,16 @@ defmodule Ranking.Import do
     )
   end
 
+  @spec get_import(Date.t()) :: %__MODULE__{}
+  def get_import(date) do
+    Repo.one(
+      from(
+        r in __MODULE__,
+        where: fragment("?::date", r.inserted_at) == ^date
+      )
+    )
+  end
+
   @doc """
   Fetches the current ranking from the provider, processes the output
   and stores the coin and associated quotes in a single database

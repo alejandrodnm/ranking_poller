@@ -1,7 +1,7 @@
 defmodule Web.Resolvers.Ranking do
   import Absinthe.Resolution.Helpers, only: [on_load: 2]
+  alias Ranking.Import
   alias Ranking.Quote
-  alias Ranking.Results
 
   @moduledoc """
   Coin resolver
@@ -20,22 +20,22 @@ defmodule Web.Resolvers.Ranking do
   end
 
   @moduledoc """
-  Results resolver
+  Import resolver
   """
-  def get_results(_parent, %{filter: %{date: date}}, _resolution) do
-    {:ok, Ranking.get_results(date)}
+  def get_import(_parent, %{filter: %{date: date}}, _resolution) do
+    {:ok, Ranking.get_import(date)}
   end
 
-  def get_results(results_id) do
-    {:ok, Ranking.get_results(results_id)}
+  def get_import(import_id) do
+    {:ok, Ranking.get_import(import_id)}
   end
 
   @moduledoc """
   Quotes resolver
   """
-  def get_quotes(%Results{} = results, args, _resolution) do
+  def get_quotes(%Import{} = import, args, _resolution) do
     Absinthe.Relay.Connection.from_query(
-      Ranking.get_quotes(results, args),
+      Ranking.get_quotes(import, args),
       &Persistence.Repo.all/1,
       args
     )

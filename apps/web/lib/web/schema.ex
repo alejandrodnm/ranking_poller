@@ -6,8 +6,8 @@ defmodule Web.Schema do
   use Absinthe.Relay.Schema, :modern
 
   alias Absinthe.Plugin
+  alias Ranking.Import
   alias Ranking.Quote
-  alias Ranking.Results
   alias Web.Resolvers
   alias Web.Schema.Middleware
 
@@ -41,8 +41,8 @@ defmodule Web.Schema do
 
   node interface do
     resolve_type(fn
-      %Results{}, _ ->
-        :results
+      %Import{}, _ ->
+        :import
 
       %Ranking.Quote{}, _ ->
         :quote
@@ -55,8 +55,8 @@ defmodule Web.Schema do
   query do
     node field do
       resolve(fn
-        %{type: :results, id: results_id}, _ ->
-          Resolvers.Ranking.get_results(String.to_integer(results_id))
+        %{type: :import, id: import_id}, _ ->
+          Resolvers.Ranking.get_import(String.to_integer(import_id))
 
         _, _ ->
           {:error, "Unkown node"}
@@ -67,9 +67,9 @@ defmodule Web.Schema do
       resolve(&Resolvers.Ranking.get_coins/3)
     end
 
-    field :results, :results do
-      arg(:filter, non_null(:results_filter))
-      resolve(&Resolvers.Ranking.get_results/3)
+    field :import, :import do
+      arg(:filter, non_null(:import_filter))
+      resolve(&Resolvers.Ranking.get_import/3)
     end
   end
 end
