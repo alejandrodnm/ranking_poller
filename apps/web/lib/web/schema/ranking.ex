@@ -12,11 +12,15 @@ defmodule Web.Schema.Ranking do
 
   connection(node_type: :quote)
 
-  object :coin do
+  node object(:coin) do
     field(:id, :id)
     field(:name, :string)
     field(:website_slug, :string)
     field(:symbol, :string)
+
+    connection field(:quotes, node_type: :quote) do
+      resolve(&Resolvers.Ranking.get_quotes/3)
+    end
   end
 
   node object(:quote) do

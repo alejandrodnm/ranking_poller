@@ -1,5 +1,6 @@
 defmodule Web.Resolvers.Ranking do
   import Absinthe.Resolution.Helpers, only: [on_load: 2]
+  alias Ranking.Coin
   alias Ranking.Import
   alias Ranking.Quote
 
@@ -33,9 +34,17 @@ defmodule Web.Resolvers.Ranking do
   @moduledoc """
   Quotes resolver
   """
-  def get_quotes(%Import{} = import, args, _resolution) do
+  def get_quotes(%Import{} = import_, args, _resolution) do
     Absinthe.Relay.Connection.from_query(
-      Ranking.get_quotes(import, args),
+      Ranking.get_quotes(import_, args),
+      &Persistence.Repo.all/1,
+      args
+    )
+  end
+
+  def get_quotes(%Coin{} = coin, args, _resolution) do
+    Absinthe.Relay.Connection.from_query(
+      Ranking.get_quotes(coin, args),
       &Persistence.Repo.all/1,
       args
     )

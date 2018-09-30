@@ -40,7 +40,15 @@ defmodule Ranking do
   end
 
   @spec get_quotes(%Import{}, any) :: [%Quote{}]
-  def get_quotes(_, args) do
+  def get_quotes(%Import{} = _, args) do
+    Enum.reduce(args, Quote, fn
+      _, query ->
+        query
+    end)
+  end
+
+  @spec get_quotes(%Coin{}, any) :: [%Quote{}]
+  def get_quotes(%Coin{} = _, args) do
     Enum.reduce(args, Quote, fn
       _, query ->
         query

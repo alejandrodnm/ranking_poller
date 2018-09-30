@@ -54,13 +54,13 @@ defmodule Web.Schema.Query.ImportTest do
               "edges" => [
                 %{
                   "node" => %{
-                    "coin" => %{"id" => "1", "name" => "Bitcoin"},
+                    "coin" => %{"id" => "Q29pbjox", "name" => "Bitcoin"},
                     "percent_change_7d" => "5.05"
                   }
                 },
                 %{
                   "node" => %{
-                    "coin" => %{"id" => "1027", "name" => "Ethereum"},
+                    "coin" => %{"id" => "Q29pbjoxMDI3", "name" => "Ethereum"},
                     "percent_change_7d" => "2.49"
                   }
                 }
@@ -124,13 +124,13 @@ defmodule Web.Schema.Query.ImportTest do
               "edges" => [
                 %{
                   "node" => %{
-                    "coin" => %{"id" => "1", "name" => "Bitcoin"},
+                    "coin" => %{"id" => "Q29pbjox", "name" => "Bitcoin"},
                     "percent_change_7d" => "5.05"
                   }
                 },
                 %{
                   "node" => %{
-                    "coin" => %{"id" => "1027", "name" => "Ethereum"},
+                    "coin" => %{"id" => "Q29pbjoxMDI3", "name" => "Ethereum"},
                     "percent_change_7d" => "2.49"
                   }
                 }
