@@ -21,6 +21,22 @@ defmodule Web.Resolvers.Ranking do
   end
 
   @moduledoc """
+  Empty node used for having a list of coins as a top level node.
+  """
+  def get_coins_wrapper(_parent, _args, _resolution) do
+    # this fails coin (filter: 1) {
+    {:ok, %{}}
+  end
+
+  def get_coins(_parent, args, _resolution) do
+    Absinthe.Relay.Connection.from_query(
+      Ranking.get_coins(args),
+      &Persistence.Repo.all/1,
+      args
+    )
+  end
+
+  @moduledoc """
   Quotes resolver
   """
   def get_quotes(%Coin{} = coin, args, _resolution) do

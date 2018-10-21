@@ -25,12 +25,14 @@ defmodule Web.Schema.Query.CoinTest do
     "slug" => "bitcoin"
   }
 
-  @coin_query """
-  {
+  @simple_coin_query """
     id,
     name,
     slug,
     symbol,
+  """
+
+  @quotes_query """
     quotes (first: 1) {
       edges {
         node {
@@ -43,8 +45,9 @@ defmodule Web.Schema.Query.CoinTest do
         }
       }
     }
-  }
   """
+
+  @coin_query "{ #{@simple_coin_query} #{@quotes_query} }"
 
   test "coin field returns a coin with its quotes" do
     query = "query ($slug: String) { coin (slug: $slug) #{@coin_query} }"
@@ -67,5 +70,66 @@ defmodule Web.Schema.Query.CoinTest do
     conn = get(conn, "/api", query: query, variables: %{id: id})
 
     assert json_response(conn, 200) == %{"data" => %{"node" => @coin_response}}
+  end
+
+  test "coins field returns a list of coin with its quotes" do
+    query =
+      Enum.join([
+        """
+        query {
+          coins {
+            coins_simple (first: 3) {
+              edges {
+                node {
+        """,
+        @simple_coin_query,
+        """
+                }
+              }
+            }
+          }
+        }
+        """
+      ])
+
+    quote_ = Factory.insert!(:all)
+
+    conn = build_conn()
+    conn = get(conn, "/api", query: query)
+
+    assert json_response(conn, 200) == %{
+             "data" => %{
+               "coins" => %{
+                 "coins_simple" => %{
+                   "edges" => [
+                     %{
+                       "node" => %{
+                         "name" => "Bitcoin",
+                         "id" => "Q29pblNpbXBsZTox",
+                         "slug" => "bitcoin",
+                         "symbol" => "BTC"
+                       }
+                     },
+                     %{
+                       "node" => %{
+                         "name" => "Ethereum",
+                         "id" => "Q29pblNpbXBsZToxMDI3",
+                         "slug" => "ethereum",
+                         "symbol" => "ETH"
+                       }
+                     },
+                     %{
+                       "node" => %{
+                         "name" => "XRP",
+                         "id" => "Q29pblNpbXBsZTo1Mg==",
+                         "slug" => "ripple",
+                         "symbol" => "XRP"
+                       }
+                     }
+                   ]
+                 }
+               }
+             }
+           }
   end
 end

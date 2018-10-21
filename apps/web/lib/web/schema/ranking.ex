@@ -11,8 +11,20 @@ defmodule Web.Schema.Ranking do
   import_types(Absinthe.Type.Custom)
 
   connection(node_type: :quote)
+  connection(node_type: :coin_simple)
+
+  interface :coin_interface do
+    field(:name, :string)
+    field(:slug, :string)
+    field(:symbol, :string)
+
+    resolve_type(fn
+      %{role: "coin"}, _ -> :coin
+    end)
+  end
 
   node object(:coin) do
+    interface(:coin_interface)
     field(:id, :id)
     field(:name, :string)
     field(:slug, :string)
@@ -20,6 +32,20 @@ defmodule Web.Schema.Ranking do
 
     connection field(:quotes, node_type: :quote) do
       resolve(&Resolvers.Ranking.get_quotes/3)
+    end
+  end
+
+  node object(:coin_simple) do
+    interface(:coin_interface)
+    field(:id, :id)
+    field(:name, :string)
+    field(:slug, :string)
+    field(:symbol, :string)
+  end
+
+  node object(:coins_wrapper) do
+    connection field(:coins_simple, node_type: :coin_simple) do
+      resolve(&Resolvers.Ranking.get_coins/3)
     end
   end
 

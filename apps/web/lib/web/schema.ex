@@ -52,5 +52,9 @@ defmodule Web.Schema do
       arg(:slug, non_null(:string))
       resolve(&Resolvers.Ranking.get_coin/3)
     end
+
+    field :coins, :coins_wrapper do
+      resolve(&Resolvers.Ranking.get_coins_wrapper/3)
+    end
   end
 end

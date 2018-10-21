@@ -8,9 +8,12 @@ defmodule Ranking do
   alias Ranking.Import
   alias Ranking.Quote
 
-  @spec get_coins() :: [%Coin{}]
-  def get_coins do
-    Coin.get_coins()
+  @spec get_coins(any) :: [%Coin{}]
+  def get_coins(args) do
+    Enum.reduce(args, Coin, fn
+      _, query ->
+        query
+    end)
   end
 
   @spec get_coin(pos_integer | String.t()) :: %Coin{}
