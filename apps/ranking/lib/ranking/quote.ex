@@ -4,6 +4,7 @@ defmodule Ranking.Quote do
   """
   alias Persistence.Repo
   alias Ranking.Coin
+  alias Ranking.Import
   alias Ranking.Results
   import Ecto.Changeset
   import Ecto.Query, only: [from: 2]

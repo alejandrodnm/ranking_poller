@@ -2,10 +2,7 @@ defmodule Ranking do
   @moduledoc """
   Maintains the ranking of the virtual coins.
   """
-  import Ecto.Query
-  alias Persistence.Repo
   alias Ranking.Coin
-  alias Ranking.Import
   alias Ranking.Quote
 
   @doc """

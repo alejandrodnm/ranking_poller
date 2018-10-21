@@ -5,10 +5,7 @@ defmodule Web.Schema do
   use Absinthe.Schema
   use Absinthe.Relay.Schema, :modern
 
-  alias Absinthe.Plugin
   alias Ranking.Coin
-  alias Ranking.Import
-  alias Ranking.Quote
   alias Web.Resolvers
   alias Web.Schema.Middleware
 
