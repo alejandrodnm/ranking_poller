@@ -8,36 +8,28 @@ defmodule Ranking do
   alias Ranking.Import
   alias Ranking.Quote
 
-  @spec get_coins(any) :: [%Coin{}]
-  def get_coins(args) do
-    Enum.reduce(args, Coin, fn
-      _, query ->
-        query
-    end)
+  @doc """
+  Returns a Coin queryable filtered by the given args
+  """
+  @spec get_coins_queryable(map) :: Ecto.Query.t()
+  def get_coins_queryable(args) do
+    Coin.get_coins_queryable(args)
   end
 
-  @spec get_coin(pos_integer | String.t()) :: %Coin{}
-  def get_coin(coin_id) do
-    case get_coin_by(coin_id) do
-      %Coin{} = coin -> coin
-      nil -> {:error, "coin does not exists"}
-    end
+  @doc """
+  Returns the coin belongin to the given identifier, either its id or
+  the coin slug.
+  """
+  @spec get_coin(pos_integer | String.t()) :: %Coin{} | {:error, String.t()}
+  def get_coin(identifier) do
+    Coin.get_coin(identifier)
   end
 
-  @spec get_coin_by(pos_integer | String.t()) :: %Coin{}
-  defp get_coin_by(coin_id) when is_integer(coin_id) do
-    Coin.get_coin(coin_id)
-  end
-
-  defp get_coin_by(slug) when is_binary(slug) do
-    Coin.get_coin(slug)
-  end
-
-  @spec get_quotes(%Coin{}, any) :: [%Quote{}]
-  def get_quotes(%Coin{} = _, args) do
-    Enum.reduce(args, Quote, fn
-      _, query ->
-        query
-    end)
+  @doc """
+  Returns a Quotes queryable filtered by the given coin and args.
+  """
+  @spec get_quotes_queryable(%Coin{}, map) :: Ecto.Query.t()
+  def get_quotes_queryable(%Coin{} = coin, args) do
+    Quote.get_quotes_queryable(coin, args)
   end
 end

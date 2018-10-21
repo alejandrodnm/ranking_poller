@@ -33,7 +33,7 @@ defmodule Web.Schema.Query.CoinTest do
   """
 
   @quotes_query """
-    quotes (first: 1) {
+    quotes (first: 3) {
       edges {
         node {
           price,
@@ -51,11 +51,10 @@ defmodule Web.Schema.Query.CoinTest do
 
   test "coin field returns a coin with its quotes" do
     query = "query ($slug: String) { coin (slug: $slug) #{@coin_query} }"
-    quote_ = Factory.insert!(:quote)
-    coin = Repo.one(Ecto.assoc(quote_, :coin))
+    Factory.insert!(:all)
 
     conn = build_conn()
-    conn = get(conn, "/api", query: query, variables: %{slug: coin.slug})
+    conn = get(conn, "/api", query: query, variables: %{slug: "bitcoin"})
 
     assert json_response(conn, 200) == %{"data" => %{"coin" => @coin_response}}
   end
@@ -77,14 +76,12 @@ defmodule Web.Schema.Query.CoinTest do
       Enum.join([
         """
         query {
-          coins {
-            coins_simple (first: 3) {
-              edges {
-                node {
+          coins (first: 3) {
+            edges {
+              node {
         """,
         @simple_coin_query,
         """
-                }
               }
             }
           }
@@ -100,34 +97,32 @@ defmodule Web.Schema.Query.CoinTest do
     assert json_response(conn, 200) == %{
              "data" => %{
                "coins" => %{
-                 "coins_simple" => %{
-                   "edges" => [
-                     %{
-                       "node" => %{
-                         "name" => "Bitcoin",
-                         "id" => "Q29pblNpbXBsZTox",
-                         "slug" => "bitcoin",
-                         "symbol" => "BTC"
-                       }
-                     },
-                     %{
-                       "node" => %{
-                         "name" => "Ethereum",
-                         "id" => "Q29pblNpbXBsZToxMDI3",
-                         "slug" => "ethereum",
-                         "symbol" => "ETH"
-                       }
-                     },
-                     %{
-                       "node" => %{
-                         "name" => "XRP",
-                         "id" => "Q29pblNpbXBsZTo1Mg==",
-                         "slug" => "ripple",
-                         "symbol" => "XRP"
-                       }
+                 "edges" => [
+                   %{
+                     "node" => %{
+                       "name" => "Bitcoin",
+                       "id" => "Q29pblNpbXBsZTox",
+                       "slug" => "bitcoin",
+                       "symbol" => "BTC"
                      }
-                   ]
-                 }
+                   },
+                   %{
+                     "node" => %{
+                       "name" => "Ethereum",
+                       "id" => "Q29pblNpbXBsZToxMDI3",
+                       "slug" => "ethereum",
+                       "symbol" => "ETH"
+                     }
+                   },
+                   %{
+                     "node" => %{
+                       "name" => "XRP",
+                       "id" => "Q29pblNpbXBsZTo1Mg==",
+                       "slug" => "ripple",
+                       "symbol" => "XRP"
+                     }
+                   }
+                 ]
                }
              }
            }

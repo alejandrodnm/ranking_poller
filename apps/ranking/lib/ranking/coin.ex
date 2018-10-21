@@ -21,7 +21,7 @@ defmodule Ranking.Coin do
   @doc """
   Validates the attributes of a `Map` against the `Coin` schema.
   """
-  @spec changeset(%Ranking.Coin{}, map()) :: Ecto.Changeset.t()
+  @spec changeset(%__MODULE__{}, map()) :: Ecto.Changeset.t()
   def changeset(coin, attrs \\ %{}) do
     coin
     |> cast(attrs, [:id, :name, :symbol, :slug])
@@ -41,25 +41,42 @@ defmodule Ranking.Coin do
     iex> coin.id
     1
   """
-  @spec get_or_insert(map()) :: {:ok, %Ranking.Coin{}} | {:error, String.t()}
+  @spec get_or_insert(map()) :: {:ok, %__MODULE__{}} | {:error, String.t()}
   def get_or_insert(payload) do
-    %Ranking.Coin{}
+    %__MODULE__{}
     |> changeset(payload)
     |> Repo.insert(on_conflict: :nothing)
   end
 
-  @spec get_coins() :: [%Ranking.Coin{}]
-  def get_coins do
-    Repo.all(from(Ranking.Coin))
+  @doc """
+  Returns the coin belongin to the given identifier, either its id or
+  the coin slug.
+  """
+  @spec get_coin(pos_integer | String.t()) :: %__MODULE__{} | {:error, String.t()}
+  def get_coin(identifier) do
+    case get_coin_by(identifier) do
+      %__MODULE__{} = coin -> coin
+      nil -> {:error, "coin does not exists"}
+    end
   end
 
-  @spec get_coin(pos_integer) :: %__MODULE__{}
-  def get_coin(coin_id) when is_integer(coin_id) do
-    Repo.get(Ranking.Coin, coin_id)
+  @spec get_coin_by(pos_integer | String.t()) :: %__MODULE__{} | nil
+  defp get_coin_by(coin_id) when is_integer(coin_id) do
+    Repo.get(__MODULE__, coin_id)
   end
 
-  @spec get_coin(String.t()) :: %__MODULE__{}
-  def get_coin(slug) when is_binary(slug) do
-    Repo.get_by(Ranking.Coin, slug: slug)
+  defp get_coin_by(slug) when is_binary(slug) do
+    Repo.get_by(__MODULE__, slug: slug)
+  end
+
+  @doc """
+  Returns a Coin queryable filtered by the given args
+  """
+  @spec get_coins_queryable(map) :: Ecto.Query.t()
+  def get_coins_queryable(args) do
+    Enum.reduce(args, __MODULE__, fn
+      _, query ->
+        query
+    end)
   end
 end

@@ -53,8 +53,8 @@ defmodule Web.Schema do
       resolve(&Resolvers.Ranking.get_coin/3)
     end
 
-    field :coins, :coins_wrapper do
-      resolve(&Resolvers.Ranking.get_coins_wrapper/3)
+    connection field(:coins, node_type: :coin_simple) do
+      resolve(&Resolvers.Ranking.get_coins/3)
     end
   end
 end

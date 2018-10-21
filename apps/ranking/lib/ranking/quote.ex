@@ -6,6 +6,7 @@ defmodule Ranking.Quote do
   alias Ranking.Coin
   alias Ranking.Results
   import Ecto.Changeset
+  import Ecto.Query, only: [from: 2]
   use Ecto.Schema
 
   schema "ranking_quote" do
@@ -29,7 +30,7 @@ defmodule Ranking.Quote do
   schema, it also checks that the coin that the quote belongs to
   exists in the database.
   """
-  @spec changeset(%Ranking.Quote{}, map()) :: Ecto.Changeset.t()
+  @spec changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
   def changeset(quote_, attrs \\ %{}) do
     quote_
     |> cast(attrs, [
@@ -54,10 +55,23 @@ defmodule Ranking.Quote do
   @doc """
   Persists a `%Ranking.Quote{}` in the database from the given payload.
   """
-  @spec insert(map()) :: {:ok, %Ranking.Quote{}} | {:error, String.t()}
+  @spec insert(map) :: {:ok, %__MODULE__{}} | {:error, String.t()}
   def insert(payload) do
-    %Ranking.Quote{}
+    %__MODULE__{}
     |> changeset(payload)
     |> Repo.insert()
+  end
+
+  @doc """
+  Returns the quotes belonging to the given coin
+  """
+  @spec get_quotes_queryable(%Coin{}, map) :: Ecto.Query.t()
+  def get_quotes_queryable(%Coin{} = coin, args) do
+    query = from(u in __MODULE__, where: u.coin_id == ^coin.id)
+
+    Enum.reduce(args, query, fn
+      _, query ->
+        query
+    end)
   end
 end

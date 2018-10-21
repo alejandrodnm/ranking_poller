@@ -43,12 +43,6 @@ defmodule Web.Schema.Ranking do
     field(:symbol, :string)
   end
 
-  node object(:coins_wrapper) do
-    connection field(:coins_simple, node_type: :coin_simple) do
-      resolve(&Resolvers.Ranking.get_coins/3)
-    end
-  end
-
   node object(:quote) do
     field(:id, :id)
     field(:timestamp, :integer)
