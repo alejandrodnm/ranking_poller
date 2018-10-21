@@ -9,7 +9,7 @@ defmodule Ranking.CoinTest do
   defp assert_coin(coin, payload) do
     assert coin.id == payload["id"]
     assert coin.name == payload["name"]
-    assert coin.website_slug == payload["website_slug"]
+    assert coin.slug == payload["slug"]
     assert coin.symbol == payload["symbol"]
   end
 
@@ -23,5 +23,25 @@ defmodule Ranking.CoinTest do
     payload = Factory.payload(:coin)
     coin = Factory.insert!(:coin)
     {:ok, ^coin} = Coin.get_or_insert(payload)
+  end
+
+  test "get a coin by id" do
+    expected_coin = Factory.insert!(:coin)
+    coin = Ranking.get_coin(expected_coin.id)
+    assert expected_coin == coin
+  end
+
+  test "get a coin by slug" do
+    expected_coin = Factory.insert!(:coin)
+    coin = Ranking.get_coin(expected_coin.slug)
+    assert expected_coin == coin
+  end
+
+  test "get a non-existing coin by id" do
+    assert {:error, "coin does not exists"} == Ranking.get_coin(42)
+  end
+
+  test "get a non-existing coin by slug" do
+    assert {:error, "coin does not exists"} == Ranking.get_coin("dogecoin")
   end
 end

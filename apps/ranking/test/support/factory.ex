@@ -97,7 +97,7 @@ defmodule Ranking.Test.Factory do
       id: payload["id"],
       name: payload["name"],
       symbol: payload["symbol"],
-      website_slug: payload["website_slug"]
+      slug: payload["slug"]
     }
   end
 

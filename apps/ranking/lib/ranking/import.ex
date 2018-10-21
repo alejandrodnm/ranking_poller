@@ -84,12 +84,19 @@ defmodule Ranking.Import do
     |> Repo.transaction()
   end
 
-  @spec process_coin(Multi.t(), list(map()), quote_extra_data) :: Multi.t()
+  @spec normalize_coin_keys(map()) :: map()
+  defp normalize_coin_keys(coin_payload) do
+    {slug, coin_payload} = Map.pop(coin_payload, "website_slug")
+    Map.put(coin_payload, "slug", slug)
+  end
+
+  @spec process_coin(Multi.t(), list({integer, map()}), quote_extra_data) :: Multi.t()
   defp process_coin(multi, [], _) do
     multi
   end
 
   defp process_coin(multi, [{id, coin_payload} | tail], quote_extra_data) do
+    coin_payload = normalize_coin_keys(coin_payload)
     quote_payload = get_quote_payload(coin_payload, quote_extra_data)
 
     multi

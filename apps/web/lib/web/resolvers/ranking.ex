@@ -7,41 +7,22 @@ defmodule Web.Resolvers.Ranking do
   @moduledoc """
   Coin resolver
   """
-  def get_coin(%Quote{} = quote_, _args, %{context: %{loader: loader}}) do
-    loader
-    |> Dataloader.load(Ranking, :coin, quote_)
-    |> on_load(fn loader ->
-      coin = Dataloader.get(loader, Ranking, :coin, quote_)
-      {:ok, coin}
-    end)
+  def get_coin(_parent, %{slug: slug}, _resolution) do
+    {:ok, Ranking.get_coin(slug)}
   end
 
-  def get_coins(_parent, _args, _resolution) do
-    {:ok, Ranking.get_coins()}
+  def get_coin(_parent, _args, _resolution) do
+    # this fails coin (filter: 1) {
+    {:error, "invalid filter"}
   end
 
-  @moduledoc """
-  Import resolver
-  """
-  def get_import(_parent, %{filter: %{date: date}}, _resolution) do
-    {:ok, Ranking.get_import(date)}
-  end
-
-  def get_import(import_id) do
-    {:ok, Ranking.get_import(import_id)}
+  def get_coin(coin_id) do
+    {:ok, Ranking.get_coin(coin_id)}
   end
 
   @moduledoc """
   Quotes resolver
   """
-  def get_quotes(%Import{} = import_, args, _resolution) do
-    Absinthe.Relay.Connection.from_query(
-      Ranking.get_quotes(import_, args),
-      &Persistence.Repo.all/1,
-      args
-    )
-  end
-
   def get_quotes(%Coin{} = coin, args, _resolution) do
     Absinthe.Relay.Connection.from_query(
       Ranking.get_quotes(coin, args),

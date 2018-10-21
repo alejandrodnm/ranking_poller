@@ -6,6 +6,7 @@ defmodule Web.Schema do
   use Absinthe.Relay.Schema, :modern
 
   alias Absinthe.Plugin
+  alias Ranking.Coin
   alias Ranking.Import
   alias Ranking.Quote
   alias Web.Resolvers
@@ -17,35 +18,19 @@ defmodule Web.Schema do
   end
 
   defp apply(middleware, :debug, _field, _object) do
-    if System.get_env("DEBUG") do
+    if System.get_env("DEBUG") == "verbose" do
       [{Middleware.Debug, :start}] ++ middleware
     else
       middleware
     end
   end
 
-  def plugins do
-    [Absinthe.Middleware.Dataloader | Plugin.defaults()]
-  end
-
-  def dataloader do
-    Dataloader.new()
-    |> Dataloader.add_source(Ranking, Ranking.data())
-  end
-
-  def context(ctx) do
-    Map.put(ctx, :loader, dataloader())
-  end
-
   import_types(__MODULE__.Ranking)
 
   node interface do
     resolve_type(fn
-      %Import{}, _ ->
-        :import
-
-      %Ranking.Quote{}, _ ->
-        :quote
+      %Coin{}, _ ->
+        :coin
 
       _, _ ->
         nil
@@ -55,21 +40,17 @@ defmodule Web.Schema do
   query do
     node field do
       resolve(fn
-        %{type: :import, id: import_id}, _ ->
-          Resolvers.Ranking.get_import(String.to_integer(import_id))
+        %{type: :coin, id: coin_id}, _ ->
+          Resolvers.Ranking.get_coin(String.to_integer(coin_id))
 
         _, _ ->
           {:error, "Unkown node"}
       end)
     end
 
-    field :coins, list_of(:coin) do
-      resolve(&Resolvers.Ranking.get_coins/3)
-    end
-
-    field :import, :import do
-      arg(:filter, non_null(:import_filter))
-      resolve(&Resolvers.Ranking.get_import/3)
+    field :coin, :coin do
+      arg(:slug, non_null(:string))
+      resolve(&Resolvers.Ranking.get_coin/3)
     end
   end
 end

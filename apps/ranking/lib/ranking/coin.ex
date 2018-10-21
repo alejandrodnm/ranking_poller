@@ -13,7 +13,7 @@ defmodule Ranking.Coin do
   schema "ranking_coin" do
     field(:id, :id, primary_key: true)
     field(:name, :string)
-    field(:website_slug, :string)
+    field(:slug, :string)
     field(:symbol, :string)
     has_many(:quotes, Quote, references: :id)
   end
@@ -24,7 +24,7 @@ defmodule Ranking.Coin do
   @spec changeset(%Ranking.Coin{}, map()) :: Ecto.Changeset.t()
   def changeset(coin, attrs \\ %{}) do
     coin
-    |> cast(attrs, [:id, :name, :symbol, :website_slug])
+    |> cast(attrs, [:id, :name, :symbol, :slug])
   end
 
   @doc """
@@ -34,7 +34,7 @@ defmodule Ranking.Coin do
     iex> payload = %{
     ...> "id" => 1,
     ...> "name"=> "my coin",
-    ...> "website_slug"=> "my-coin",
+    ...> "slug"=> "my-coin",
     ...> "symbol"=> "mc"
     ...> }
     iex> {:ok, coin} = Coin.get_or_insert(payload)
@@ -51,5 +51,15 @@ defmodule Ranking.Coin do
   @spec get_coins() :: [%Ranking.Coin{}]
   def get_coins do
     Repo.all(from(Ranking.Coin))
+  end
+
+  @spec get_coin(pos_integer) :: %__MODULE__{}
+  def get_coin(coin_id) when is_integer(coin_id) do
+    Repo.get(Ranking.Coin, coin_id)
+  end
+
+  @spec get_coin(String.t()) :: %__MODULE__{}
+  def get_coin(slug) when is_binary(slug) do
+    Repo.get_by(Ranking.Coin, slug: slug)
   end
 end

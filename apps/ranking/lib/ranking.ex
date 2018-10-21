@@ -8,43 +8,26 @@ defmodule Ranking do
   alias Ranking.Import
   alias Ranking.Quote
 
-  def data do
-    Dataloader.Ecto.new(Repo, query: &query/2)
-  end
-
-  def query(queryable, _) do
-    queryable
-  end
-
-  @spec get_import(pos_integer) :: %Import{}
-  def get_import(id) when is_integer(id) do
-    Import.get_import(id)
-  end
-
-  @spec get_import(Date.t()) :: %Import{}
-  def get_import(date) do
-    Import.get_import(date)
-  end
-
   @spec get_coins() :: [%Coin{}]
   def get_coins do
     Coin.get_coins()
   end
 
-  @spec get_coin(list, pos_integer) :: %Coin{}
-  def get_coin(_, coins_ids) do
-    Coin
-    |> where([coin], coin.id in ^Enum.uniq(coins_ids))
-    |> Repo.all()
-    |> Map.new(fn coin -> {coin.id, coin} end)
+  @spec get_coin(pos_integer | String.t()) :: %Coin{}
+  def get_coin(coin_id) do
+    case get_coin_by(coin_id) do
+      %Coin{} = coin -> coin
+      nil -> {:error, "coin does not exists"}
+    end
   end
 
-  @spec get_quotes(%Import{}, any) :: [%Quote{}]
-  def get_quotes(%Import{} = _, args) do
-    Enum.reduce(args, Quote, fn
-      _, query ->
-        query
-    end)
+  @spec get_coin_by(pos_integer | String.t()) :: %Coin{}
+  defp get_coin_by(coin_id) when is_integer(coin_id) do
+    Coin.get_coin(coin_id)
+  end
+
+  defp get_coin_by(slug) when is_binary(slug) do
+    Coin.get_coin(slug)
   end
 
   @spec get_quotes(%Coin{}, any) :: [%Quote{}]
